@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="50a321b3-ce88-46e4-b0dc-61f937d46fd5" name="lucande.io" url="https://project.lucande.io">
+        <fileTransfer rootFolder="/usr/share/nginx/html_project" accessType="SFTP" host="54.170.184.142" port="22" sshConfigId="8a8e430d-92c1-4b9a-ac23-800194cfdcd9" sshConfig="ec2-user@54.170.184.142:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
