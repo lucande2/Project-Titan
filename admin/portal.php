@@ -1,4 +1,11 @@
 <?php
+/*
+    admin/portal.php    VERSION 1.3
+    Home page for the administrative centre.  Updates the header side-menu to have administrative portal links.
+    Reviewed 7/8/2023
+*/
+
+// Include header
 include_once '../engine/header.php';
 
 // Check if user is logged in
@@ -19,6 +26,7 @@ if ($user['role'] !== 'admin') {
     exit;
 }
 
+// Table information functions start
 // Count total users
 $sql = "SELECT COUNT(*) AS total FROM users";
 $result = mysqli_query($conn, $sql);
@@ -63,10 +71,10 @@ $weekly_meal_count = mysqli_fetch_assoc($result)['total'];
 $sql = "SELECT COUNT(*) AS total FROM meals WHERE meal_date >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
 $result = mysqli_query($conn, $sql);
 $daily_meal_count = mysqli_fetch_assoc($result)['total'];
-
-
+// End table information fetching functions
 ?>
 
+<!-- Page starts -->
 <h1>Welcome to the Admin Portal</h1>
 <h2>User Statistics</h2>
 <p>Total users and those created in the past week or day.</p>
