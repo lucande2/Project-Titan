@@ -1,4 +1,11 @@
 <?php
+/*
+    admin/manage_user.php    VERSION 1.3
+    Accessed from manage_users.php, page loads with an ID retrieved from POST.  Allows administrators to update user information.
+    Reviewed 7/8/2023
+*/
+
+// Include header, database connection, and functions for preset value initialisation
 include_once '../engine/header.php';
 include_once '../engine/dbConnect.php';
 require_once '../engine/processes/analysis_preset.php';
@@ -71,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<!-- Page starts -->
 <h1>Manage User: <?php echo $user['username']; ?></h1>
 
 <form action="manage_user.php?username=<?php echo $user['username']; ?>" method="post">
