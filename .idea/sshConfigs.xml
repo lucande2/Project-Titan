@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SshConfigs">
-    <configs>
-      <sshConfig host="54.170.184.142" id="8a8e430d-92c1-4b9a-ac23-800194cfdcd9" keyPath="Z:\Documents\Server\moogle_sysop.ppk" port="22" nameFormat="DESCRIPTIVE" username="ec2-user" useOpenSSHConfig="true" />
-    </configs>
-  </component>
-</project>
