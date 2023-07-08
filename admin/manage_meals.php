@@ -1,7 +1,15 @@
 <?php
+/*
+    admin/manage_meals.php    VERSION 1.3
+    Accessed from the administrator portal.  Allows an admin to view, delete, and manage meals.
+    Reviewed 7/8/2023
+*/
+
+// Include connection variable and header
 include_once '../engine/header.php';
 include_once '../engine/dbConnect.php';
 
+// Starts a session
 session_start();
 
 // Check if user is logged in and has admin role
@@ -28,6 +36,7 @@ $total_meals = mysqli_fetch_array($total_meals)[0];
 $total_pages = ceil($total_meals / $items_per_page);
 ?>
 
+<!-- Page starts -->
 <h1>Manage Meals</h1>
 
 <table class="table-custom">
