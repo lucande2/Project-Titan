@@ -1,3 +1,9 @@
+/*
+    admin/delete_user.php    VERSION 1.3
+    Accessed from manage_users.php, page loads with an ID retrieved from POST.
+    Reviewed 7/8/2023
+*/
+
 <?php
 include_once '../engine/dbConnect.php';
 session_start();
