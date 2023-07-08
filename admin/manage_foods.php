@@ -1,8 +1,18 @@
 <?php
+/*
+    admin/manage_foods.php    VERSION 1.3
+    Accessed from the administrative portal.  Allows an administrator the ability to see, delete, and manage foods.
+    Reviewed 7/8/2023
+*/
+
+// Include connections and header
 include_once '../engine/header.php';
 include_once '../engine/dbConnect.php';
 
+// Start session
 session_start();
+
+// Validate user is logged in and an adminsitrator
 if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
     if (!isset($_SESSION['username'])) {
         echo "Session username is not set<br>";
@@ -13,6 +23,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
     exit;
 }
 
+// Pagination
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 if (!filter_var($page, FILTER_VALIDATE_INT) || $page < 1) {
     header('Location: error.php');
@@ -22,12 +33,14 @@ if (!filter_var($page, FILTER_VALIDATE_INT) || $page < 1) {
 $items_per_page = 20;
 $offset = ($page - 1) * $items_per_page;
 
+// Define variables
 $result = mysqli_query($conn, "SELECT * FROM food LIMIT $offset, $items_per_page");
 $total_foods = mysqli_query($conn, "SELECT COUNT(*) FROM food");
 $total_foods = mysqli_fetch_array($total_foods)[0];
 $total_pages = ceil($total_foods / $items_per_page);
 ?>
 
+<!-- Page starts -->
 <h1>Manage Foods</h1>
 
 <table class="table-custom">
