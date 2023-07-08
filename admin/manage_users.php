@@ -1,7 +1,15 @@
 <?php
+/*
+    admin/manage_users.php    VERSION 1.3
+    Accessed from the administrative portal.  Allows an administrator the ability to view, manage, and delete users.
+    Reviewed 7/8/2023
+*/
+
+// Include header and database connection variables
 include_once '../engine/header.php';
 include_once '../engine/dbConnect.php';
 
+// Start session
 session_start();
 
 // Check if user is logged in and has admin role
@@ -28,6 +36,7 @@ $total_users = mysqli_fetch_array($total_users)[0];
 $total_pages = ceil($total_users / $items_per_page);
 ?>
 
+<!-- Page Starts -->
 <h1>Manage Users</h1>
 
 <table class="table-custom">
