@@ -10,19 +10,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $food_group = mysqli_real_escape_string($conn, htmlspecialchars($_POST['food_group']));
     $serving_size = mysqli_real_escape_string($conn, htmlspecialchars($_POST['serving_size']));
     $serving_measurement = mysqli_real_escape_string($conn, htmlspecialchars($_POST['serving_measurement']));
-    $calories = mysqli_real_escape_string($conn, htmlspecialchars($_POST['calories']));
-    $user_id = $_SESSION['user_id'];
+    $calories = !empty($_POST['calories']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['calories'])) : 0;
 
     // Prepare SQL statement
-    $stmt = $conn->prepare("INSERT INTO food (name, brand, food_group, serving_size, serving_measurement, calories, user_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("sssissi", $food_name, $brand, $food_group, $serving_size, $serving_measurement, $calories, $user_id); // Calories added to bind_param
+    $stmt = $conn->prepare("INSERT INTO food (name, brand, food_group, serving_size, serving_measurement, calories, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("sssisi", $food_name, $brand, $food_group, $serving_size, $serving_measurement, $calories); // Calories added to bind_param
 
     // Execute SQL statement
     $stmt->execute();
 
     // Get the id of the food item that was just inserted
     $food_id = $conn->insert_id;
-
     // Now, loop through the ingredients and insert them
     foreach ($_POST['ingredients'] as $ingredient) {
         $ingredient = mysqli_real_escape_string($conn, htmlspecialchars($ingredient));
@@ -47,24 +45,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert the fats information
-    $total_fats = mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_fats']));
-    $saturated_fats = mysqli_real_escape_string($conn, htmlspecialchars($_POST['saturated_fats']));
-    $trans_fats = mysqli_real_escape_string($conn, htmlspecialchars($_POST['trans_fats']));
+    $total_fats = !empty($_POST['total_fats']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_fats'])) : 0;
+    $saturated_fats = !empty($_POST['saturated_fats']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['saturated_fats'])) : 0;
+    $trans_fats = !empty($_POST['trans_fats']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['trans_fats'])) : 0;
 
     $stmt = $conn->prepare("INSERT INTO fats (food_id, total, saturated_fats, trans_fats) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("iiii", $food_id, $total_fats, $saturated_fats, $trans_fats);
     $stmt->execute();
 
-    // Insert the additional info
-    $cholesterol = mysqli_real_escape_string($conn, htmlspecialchars($_POST['cholesterol']));
-    $dietary_fibres = mysqli_real_escape_string($conn, htmlspecialchars($_POST['dietary_fibres']));
-    $total_sugars = mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_sugars']));
-    $proteins = mysqli_real_escape_string($conn, htmlspecialchars($_POST['proteins']));
-    $sodium = mysqli_real_escape_string($conn, htmlspecialchars($_POST['sodium']));
+// Insert the additional info
+    $cholesterol = !empty($_POST['cholesterol']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['cholesterol'])) : 0;
+    $dietary_fibres = !empty($_POST['dietary_fibres']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['dietary_fibres'])) : 0;
+    $total_sugars = !empty($_POST['total_sugars']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_sugars'])) : 0;
+    $proteins = !empty($_POST['proteins']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['proteins'])) : 0;
+    $sodium = !empty($_POST['sodium']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['sodium'])) : 0;
 
     $stmt = $conn->prepare("INSERT INTO additional_info (food_id, cholesterol, dietary_fibres, total_sugars, proteins, sodium) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("iiiiii", $food_id, $cholesterol, $dietary_fibres, $total_sugars, $proteins, $sodium);
     $stmt->execute();
+
 
     // Insert the nutrients and their amounts
     $nutrient_names = $_POST['nutrient_names'];

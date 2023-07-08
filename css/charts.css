@@ -1,0 +1,69 @@
+/* Chart Styles */
+.chart-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+
+.chart-circle {
+    width: 100%;
+    height: 100%;
+    background: #f2f2f2;
+    border-radius: 50%;
+    position: relative;
+}
+
+.chart-circle .chart-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Add color classes for each nutrient */
+.chart-color.calcium { background-color: #ff0000; }
+.chart-color.chloride { background-color: #00ff00; }
+.chart-color.chromium { background-color: #0000ff; }
+.chart-color.copper { background-color: #ff00ff; }
+.chart-color.fluoride { background-color: #ffff00; }
+.chart-color.iodine { background-color: #00ffff; }
+.chart-color.iron { background-color: #800000; }
+.chart-color.magnesium { background-color: #008000; }
+.chart-color.manganese { background-color: #000080; }
+.chart-color.molybdenum { background-color: #800080; }
+.chart-color.phosphorous { background-color: #808000; }
+.chart-color.potassium { background-color: #008080; }
+.chart-color.selenium { background-color: #ff8000; }
+.chart-color.sulfur { background-color: #808080; }
+.chart-color.vitamin_a { background-color: #ff0080; }
+.chart-color.vitamin_b1 { background-color: #00ff80; }
+.chart-color.vitamin_b2 { background-color: #8000ff; }
+.chart-color.vitamin_b3 { background-color: #ff80ff; }
+.chart-color.vitamin_b5 { background-color: #80ffff; }
+.chart-color.vitamin_b6 { background-color: #ffff80; }
+.chart-color.vitamin_b7 { background-color: #ff8080; }
+.chart-color.vitamin_b9 { background-color: #80ff80; }
+.chart-color.vitamin_b12 { background-color: #8080ff; }
+.chart-color.vitamin_c { background-color: #ff80bf; }
+.chart-color.vitamin_d { background-color: #80ffbf; }
+.chart-color.vitamin_e { background-color: #bf80ff; }
+.chart-color.vitamin_k { background-color: #bfff80; }
+.chart-color.zinc { background-color: #ffbf80; }
+
+
+.chart-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Data Section Styles */
+.data-section-two-col {
+    display: flex;
+    justify-content: space-between;
+}

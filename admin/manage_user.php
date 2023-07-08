@@ -1,13 +1,13 @@
 <?php
 include_once '../engine/header.php';
 include_once '../engine/dbConnect.php';
+require_once '../engine/processes/analysis_preset.php';
 
-session_start();
+// Check if user is logged in and has admin role
 if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
-    header('Location: ../content/login.php');
+    echo '<p>You do not have permission to view this page.</p>';
     exit;
 }
-
 if (!isset($_GET['username'])) {
     header('Location: error.php');
     exit();
@@ -25,8 +25,21 @@ if(!$user) {
     exit();
 }
 
+// Get the user_id from the fetched user data
+$user_id = $user['id'];
+
 // Post request for updating user data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['init_nutrients'])) {-
+
+        // Delete all previous user values
+        $stmt = $conn->prepare("DELETE FROM ac_user_values WHERE user_id = ?");
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+
+        // Initialise nutrient values for the user
+        initialiseUserNutrientValues($user['id']);
+    }
     if (isset($_POST['delete'])) {
         // Delete user
         $stmt = $conn->prepare("DELETE FROM users WHERE username=?");
@@ -35,21 +48,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Update user
         $username = trim($_POST['username']);
-        $password = $_POST['password']; // Will be hashed before storing
         $email = trim($_POST['email']);
         $role = trim($_POST['role']);
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hashing the password
 
-        // Prepared statement to update user
-        $stmt = $conn->prepare("UPDATE users SET username=?, password=?, email=?, role=? WHERE username=?");
-        $stmt->bind_param('sssss', $username, $hashed_password, $email, $role, $username);
+        if (!empty($_POST['password'])) {
+            $password = $_POST['password'];
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hashing the new password
+            $stmt = $conn->prepare("UPDATE users SET username=?, password=?, email=?, role=? WHERE username=?");
+            $stmt->bind_param('sssss', $username, $hashed_password, $email, $role, $username);
+        } else {
+            // Fetch the existing hashed password from the database
+            $existingPassword = $user['password'];
+            $stmt = $conn->prepare("UPDATE users SET username=?, password=?, email=?, role=? WHERE username=?");
+            $stmt->bind_param('sssss', $username, $existingPassword, $email, $role, $username);
+        }
+
         $stmt->execute();
     }
 
     header("Location: manage_users.php");
     exit();
 }
-
 ?>
 
 <h1>Manage User: <?php echo $user['username']; ?></h1>
@@ -67,6 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <option value="admin" <?php echo ($user['role'] == 'admin' ? 'selected' : ''); ?>>Admin</option>
     </select><br>
     <input type="submit" value="Update">
+    <input type="submit" name="init_nutrients" value="Initialise Nutrient Values">
     <input type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure you want to delete this user?')">
 </form>
 

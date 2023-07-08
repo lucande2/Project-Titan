@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("#add-ingredient").click(function () {
+    $("#add-ingredient").click(function() {
         $("#ingredients").append(`
         <div class="ingredient-group row">
             <div class="col 9">
@@ -63,9 +63,10 @@ $(document).ready(function() {
     </div>`;
 
         $('#nutrients').append(nutrientHtml);
+
     });
 
-    $("#add-tag").click(function () {
+    $("#add-tag").click(function() {
         $("#tags").append(`
         <div class="tag-group row">
             <input type="text" class="tag form-control col" name="tags[]">
@@ -113,4 +114,22 @@ $(document).ready(function() {
             $('#nutrients .nutrient-group:last .form-control:first').focus(); // Focus on the newly created field
         }
     });
+
+    // Form submission
+    $("form").submit(function(event) {
+        // Prevent form submission if any required field is empty
+        if ($.trim($("#name").val()) === "" ||
+            $.trim($("#brand").val()) === "" ||
+            $.trim($("#serving_size").val()) === "" ||
+            $.trim($("#calories").val()) === "" ||
+            $.trim($("#cholesterol").val()) === "" ||
+            $.trim($("#dietary_fibres").val()) === "" ||
+            $.trim($("#total_sugars").val()) === "" ||
+            $.trim($("#proteins").val()) === "" ||
+            $.trim($("#sodium").val()) === "") {
+            event.preventDefault();
+            alert("Please fill in all required fields.");
+        }
+    });
+
 });

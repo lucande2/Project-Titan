@@ -48,14 +48,15 @@ $total_pages = ceil($total_foods / $items_per_page);
                     <div class="dropdown-content">
                         <a href="../content/foods/manage_food.php?id=<?php echo $food['id']; ?>">Manage</a>
                         <a href="../content/foods/view_food.php?id=<?php echo $food['id']; ?>">View</a>
-                        <a href="../engine/delete_food.php?id=<?php echo $food['id']; ?>">Delete</a>
+                        <a href="../engine/processes/delete_food.php?id=<?php echo $food['id']; ?>">Delete</a>
                     </div>
                 </div>
             </td> <!-- Actions -->
         </tr> <!-- end of entry -->
     <?php endwhile; ?>
 </table>
-
+<br>
+<p>Pages</p>
 <div class="pagination">
     <?php for($i = 1; $i <= $total_pages; $i++): ?>
         <a class="button-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>

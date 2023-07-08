@@ -1,8 +1,11 @@
 <?php
 
-// Start the session
-session_start();
+// Start the session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+// Is a user logged in?
 if(!isset($_SESSION['username'])) {
     // User not logged in. Redirect them back to the login.php page.
     header('Location: login.php');
@@ -10,9 +13,9 @@ if(!isset($_SESSION['username'])) {
 }
 
 // include your function or connection setup here
-include '../../engine/fetch_food.php';
-include '../../engine/dbConnect.php';
-include '../../engine/manage_food_process.php';
+include '/usr/share/nginx/html_project/engine/dbConnect.php';
+include '/usr/share/nginx/html_project/engine/processes/fetch_food_details.php';
+include '/usr/share/nginx/html_project/engine/processes/manage_food_process.php';
 
 // check if id is set in the URL
 if(isset($_GET['id'])) {
@@ -35,7 +38,7 @@ if(isset($_GET['id'])) {
 
 } else {
     // Redirect to a different page if id is not provided
-    header('Location: ../../admin/manage_foods.php');
+    header('Location: /usr/share/nginx/html_project/admin/manage_foods.php');
     exit;
 }
 ?>
@@ -44,56 +47,57 @@ if(isset($_GET['id'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <h1>Edit Food</h1>
-    <form action="../../engine/processes/manage_food_process.php" method="post">
+    <form action="/engine/processes/manage_food_process.php" method="post">
         <input type="hidden" name="id" value="<?= $id; ?>" />
         <div class="row">
             <div class="col">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" class="form-control" value="<?= $food['name']; ?>">
+                <label for="name" style="color:#fff;">Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="<?= isset($food['name']) ? $food['name'] : ''; ?>">
             </div>
             <div class="col">
-                <label for="brand">Brand</label>
-                <input type="text" id="brand" name="brand" class="form-control" value="<?= $food['brand']; ?>">
+                <label for="brand" style="color:#fff;">Brand</label>
+                <input type="text" id="brand" name="brand" class="form-control" value="<?= isset($food['brand']) ? $food['brand'] : ''; ?>">
             </div>
             <div class="col">
-                <label for="food_group">Food Group</label>
+                <label for="food_group" style="color:#fff;">Food Group</label>
                 <select id="food_group" name="food_group" class="form-control">
-                    <option value="Grains" <?= ($food['food_group'] == 'Grains') ? 'selected' : ''; ?>>Grains</option>
-                    <option value="Fruits" <?= ($food['food_group'] == 'Fruits') ? 'selected' : ''; ?>>Fruits</option>
-                    <option value="Vegetables" <?= ($food['food_group'] == 'Vegetables') ? 'selected' : ''; ?>>Vegetables</option>
-                    <option value="Proteins" <?= ($food['food_group'] == 'Proteins') ? 'selected' : ''; ?>>Proteins</option>
-                    <option value="Dairy" <?= ($food['food_group'] == 'Dairy') ? 'selected' : ''; ?>>Dairy</option>
-                    <option value="Oils" <?= ($food['food_group'] == 'Oils') ? 'selected' : ''; ?>>Oils</option>
-                    <option value="Supplement" <?= ($food['food_group'] == 'Supplement') ? 'selected' : ''; ?>>Supplement</option>
-                    <option value="Unaligned" <?= ($food['food_group'] == 'Unaligned') ? 'selected' : ''; ?>>Unaligned</option>
+                    <option value="Grains" <?= (isset($food['food_group']) && $food['food_group'] == 'Grains') ? 'selected' : ''; ?>>Grains</option>
+                    <option value="Fruits" <?= (isset($food['food_group']) && $food['food_group'] == 'Fruits') ? 'selected' : ''; ?>>Fruits</option>
+                    <option value="Vegetables" <?= (isset($food['food_group']) && $food['food_group'] == 'Vegetables') ? 'selected' : ''; ?>>Vegetables</option>
+                    <option value="Proteins" <?= (isset($food['food_group']) && $food['food_group'] == 'Proteins') ? 'selected' : ''; ?>>Proteins</option>
+                    <option value="Dairy" <?= (isset($food['food_group']) && $food['food_group'] == 'Dairy') ? 'selected' : ''; ?>>Dairy</option>
+                    <option value="Oils" <?= (isset($food['food_group']) && $food['food_group'] == 'Oils') ? 'selected' : ''; ?>>Oils</option>
+                    <option value="Supplement" <?= (isset($food['food_group']) && $food['food_group'] == 'Supplement') ? 'selected' : ''; ?>>Supplement</option>
+                    <option value="Unaligned" <?= (isset($food['food_group']) && $food['food_group'] == 'Unaligned') ? 'selected' : ''; ?>>Unaligned</option>
                 </select>
             </div>
         </div>
 
+
         <div class="row">
             <div class="col">
-                <label for="serving_size">Serving Size</label>
-                <input type="text" id="serving_size" name="serving_size" class="form-control" value="<?= $food['serving_size']; ?>">
+                <label for="serving_size" style="color:#fff;">Serving Size</label>
+                <input type="text" id="serving_size" name="serving_size" class="form-control" value="<?= isset($food['serving_size']) ? $food['serving_size'] : ''; ?>">
             </div>
             <div class="col">
-                <label for="serving_measurement">Measurement Type</label>
+                <label for="serving_measurement" style="color:#fff;">Measurement Type</label>
                 <select id="serving_measurement" name="serving_measurement" class="form-control">
-                    <option value="Cups" <?= ($food['serving_measurement'] == 'Cups') ? 'selected' : ''; ?>>Cups</option>
-                    <option value="Ounces" <?= ($food['serving_measurement'] == 'Ounces') ? 'selected' : ''; ?>>Ounces</option>
-                    <option value="Pieces" <?= ($food['serving_measurement'] == 'Pieces') ? 'selected' : ''; ?>>Pieces</option>
-                    <option value="Container" <?= ($food['serving_measurement'] == 'Container') ? 'selected' : ''; ?>>Container</option>
-                    <option value="Package" <?= ($food['serving_measurement'] == 'Package') ? 'selected' : ''; ?>>Package</option>
+                    <option value="Cups" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Cups') ? 'selected' : ''; ?>>Cups</option>
+                    <option value="Ounces" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Ounces') ? 'selected' : ''; ?>>Ounces</option>
+                    <option value="Pieces" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Pieces') ? 'selected' : ''; ?>>Pieces</option>
+                    <option value="Container" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Container') ? 'selected' : ''; ?>>Container</option>
+                    <option value="Package" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Package') ? 'selected' : ''; ?>>Package</option>
                 </select>
             </div>
             <div class="col">
-                <label for="calories">Calories</label>
-                <input type="number" id="calories" name="calories" class="form-control" value="<?= $food['calories']; ?>">
+                <label for="calories" style="color:#fff;">Calories</label>
+                <input type="number" id="calories" name="calories" class="form-control" value="<?= isset($food['calories']) ? $food['calories'] : ''; ?>">
             </div>
-        </div>
+        </div>  <br>
 
         <div class="row">
             <div class="col">
-                <label for="ingredients">Ingredients</label>
+                <label for="ingredients" style="color:#fff;">Ingredients</label>
                 <div id="ingredients">
                     <?php foreach($ingredients as $ingredient) { ?>
                         <div class="row ingredient-group">
@@ -106,53 +110,59 @@ if(isset($_GET['id'])) {
                         </div>
                     <?php } ?>
                 </div>
-                <button type="button" id="add-ingredient">Add Ingredient</button>
+                <button type="button" id="add-ingredient" class="btn btn-primary">Add Ingredient</button>
+
             </div>
-        </div>
-            <div class="row">
-                <div class="col">
-                    <label for="total_fats">Total Fats</label>
-                    <input type="number" id="total_fats" name="total_fats" class="form-control" value="<?= $fats[0]['total']; ?>">
-                </div>
-                <div class="col">
-                    <label for="saturated_fats">Saturated Fats</label>
-                    <input type="number" id="saturated_fats" name="saturated_fats" class="form-control" value="<?= $fats[0]['saturated_fats']; ?>">
-                </div>
-                <div class="col">
-                    <label for="trans_fats">Trans Fats</label>
-                    <input type="number" id="trans_fats" name="trans_fats" class="form-control" value="<?= $fats[0]['trans_fats']; ?>">
-                </div>
-            </div>
+        </div><br>
 
         <div class="row">
             <div class="col">
-                <label for="cholesterol">Cholesterol</label>
-                <input type="number" id="cholesterol" name="cholesterol" class="form-control" value="<?= $additional_info[0]['cholesterol']; ?>">
+                <label for="total_fats" style="color:#fff;">Total Fats</label>
+                <input type="number" id="total_fats" name="total_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['total'] : ''; ?>">
             </div>
             <div class="col">
-                <label for="dietary_fibres">Dietary Fibres</label>
-                <input type="number" id="dietary_fibres" name="dietary_fibres" class="form-control" value="<?= $additional_info[0]['dietary_fibres']; ?>">
+                <label for="saturated_fats" style="color:#fff;">Saturated Fats</label>
+                <input type="number" id="saturated_fats" name="saturated_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['saturated_fats'] : ''; ?>">
             </div>
             <div class="col">
-                <label for="total_sugars">Total Sugars</label>
-                <input type="number" id="total_sugars" name="total_sugars" class="form-control" value="<?= $additional_info[0]['total_sugars']; ?>">
+                <label for="trans_fats" style="color:#fff;">Trans Fats</label>
+                <input type="number" id="trans_fats" name="trans_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['trans_fats'] : ''; ?>">
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <label for="sodium">Sodium</label>
-                <input type="number" id="sodium" name="total_sugars" class="form-control" value="<?= $additional_info[0]['sodium']; ?>">
+                <label for="cholesterol" style="color:#fff;">Cholesterol</label>
+                <input type="number" id="cholesterol" name="cholesterol" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['cholesterol'] : ''; ?>">
             </div>
             <div class="col">
-                <label for="total_sugars">Proteins</label>
-                <input type="number" id="proteins" name="total_sugars" class="form-control" value="<?= $additional_info[0]['proteins']; ?>">
+                <label for="dietary_fibres" style="color:#fff;">Dietary Fibres</label>
+                <input type="number" id="dietary_fibres" name="dietary_fibres" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['dietary_fibres'] : ''; ?>">
+            </div>
+            <div class="col">
+                <label for="total_sugars" style="color:#fff;">Total Sugars</label>
+                <input type="number" id="total_sugars" name="total_sugars" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['total_sugars'] : ''; ?>">
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <label for="nutrients">Nutrients</label>
+                <label for="sodium" style="color:#fff;">Sodium</label>
+                <input type="number" id="sodium" name="sodium" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['sodium'] : ''; ?>">
+            </div>
+            <div class="col">
+                <label for="proteins" style="color:#fff;">Proteins</label>
+                <input type="number" id="proteins" name="proteins" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['proteins'] : ''; ?>">
+            </div>
+            <div class="col">
+                <p> </p>
+            </div>
+        </div><br>
+
+
+        <div class="row">
+            <div class="col">
+                <label for="nutrients" style="color:#fff;">Nutrients</label>
                 <div id="nutrients">
                     <?php foreach($nutrients as $nutrient) { ?>
                         <div class="row nutrient-group">
@@ -208,13 +218,14 @@ if(isset($_GET['id'])) {
                 </div>
 
 
-                <button type="button" id="add-nutrient">Add Nutrient</button>
+                <button type="button" id="add-nutrient" class="btn btn-primary">Add Nutrient</button>
+
             </div>
-        </div>
+        </div><br>
 
         <div class="row">
             <div class="col">
-                <label for="tags">Tags</label>
+                <label for="tags" style="color:#fff;">Tags</label>
                 <div id="tags">
                     <?php foreach($tags as $tag) { ?>
                         <div class="row tag-group">
@@ -227,13 +238,14 @@ if(isset($_GET['id'])) {
                         </div>
                     <?php } ?>
                 </div>
-                <button type="button" id="add-tag">Add Tag</button>
+                <button type="button" id="add-tag" class="btn btn-primary">Add Tag</button>
+
             </div>
-        </div>
+        </div><br>
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <script src="../../engine/javascript/manage_food.js"></script>
+    <script src="/engine/javascript/manage_food_v1.js"></script>
 
 <?php include '../../engine/footer.php'; ?>

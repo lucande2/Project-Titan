@@ -51,34 +51,13 @@ $tags = $result->fetch_all(MYSQLI_ASSOC);
 // Close the connection
 $conn->close();
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>View Food</title>
-    <style>
-        .data-section {
-            background-color: #f9f9f9;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-        }
-        .data-section h2 {
-            margin-top: 0;
-        }
-        .data-section p {
-            margin-bottom: 0;
-        }
-    </style>
-</head>
-<body>
 
 <h1><?php echo htmlspecialchars($food['name']); ?></h1>
 <div class="data-section">
     <h2>Details</h2>
     <p><strong>Brand:</strong> <?php echo htmlspecialchars($food['brand']); ?></p>
     <p><strong>Food Group:</strong> <?php echo htmlspecialchars($food['food_group']); ?></p>
-    <p><strong>Serving Size:</strong> <?php echo htmlspecialchars($food['serving_size']) . ' view_food.php' . htmlspecialchars($food['serving_measurement']); ?></p>
+    <p><strong>Serving Size:</strong> <?php echo htmlspecialchars($food['serving_size']) . ' ' . htmlspecialchars($food['serving_measurement']); ?></p>
 </div>
 
 <div class="data-section">
@@ -131,9 +110,7 @@ $conn->close();
     <h2>Tags</h2>
     <p><?php echo htmlspecialchars(implode(", ", array_column($tags, 'name'))); ?></p>
 </div>
-<a href="manage_food.php?id=<?php echo htmlspecialchars($id); ?>" class="button-link">Manage Food</a>
-<a href="../../engine/delete_food.php?id=<?php echo $food['id']; ?>" class="button-link red" onclick="return confirm('Are you sure you want to delete this food item?')">Delete</a>
+<a href="/content/foods/manage_food.php?id=<?php echo htmlspecialchars($id); ?>" class="button-link">Manage Food</a>
+<a href="../../engine/processes/delete_food.php?id=<?php echo $food['id']; ?>" class="button-link red" onclick="return confirm('Are you sure you want to delete this food item?')">Delete</a>
 
 <?php include '../../engine/footer.php'; ?>
-</body>
-</html>

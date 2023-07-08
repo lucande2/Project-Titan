@@ -1,17 +1,19 @@
 <?php
 include_once '../engine/header.php';
 
-// Check if user is admin
+// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     echo '<p>You are not logged in, please <a href="../content/login.php">login</a> or <a href="../content/register.php">register a new account</a>.</p>';
     exit;
 }
 
+// Define variables
 $username = $_SESSION['username'];
 $sql = "SELECT role FROM users WHERE username = '$username'";
 $result = mysqli_query($conn, $sql);
 $user = mysqli_fetch_assoc($result);
 
+// Check if user is administrator
 if ($user['role'] !== 'admin') {
     echo '<p>You do not have permission to view this page.</p>';
     exit;
@@ -47,15 +49,32 @@ $sql = "SELECT COUNT(*) AS total FROM food WHERE created_at >= DATE_SUB(CURDATE(
 $result = mysqli_query($conn, $sql);
 $daily_food_count = mysqli_fetch_assoc($result)['total'];
 
+// Fetch total meals
+$sql = "SELECT COUNT(*) AS total FROM meals";
+$result = mysqli_query($conn, $sql);
+$total_meal_count = mysqli_fetch_assoc($result)['total'];
+
+// Fetch meals for the past week
+$sql = "SELECT COUNT(*) AS total FROM meals WHERE meal_date >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
+$result = mysqli_query($conn, $sql);
+$weekly_meal_count = mysqli_fetch_assoc($result)['total'];
+
+// Fetch meals for the past 24 hours
+$sql = "SELECT COUNT(*) AS total FROM meals WHERE meal_date >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+$result = mysqli_query($conn, $sql);
+$daily_meal_count = mysqli_fetch_assoc($result)['total'];
+
+
 ?>
 
 <h1>Welcome to the Admin Portal</h1>
 <h2>User Statistics</h2>
+<p>Total users and those created in the past week or day.</p>
 <table class="table-custom">
     <tr>
-        <th>Total Users</th>
-        <th>Users Created in Past Week</th>
-        <th>Users Created in Past 24 Hours</th>
+        <th>Total</th>
+        <th>Past Week</th>
+        <th>Past Day</th>
     </tr>
     <tr>
         <td><?php echo $user_count; ?></td>
@@ -63,18 +82,34 @@ $daily_food_count = mysqli_fetch_assoc($result)['total'];
         <td><?php echo $daily_user_count; ?></td>
     </tr>
 </table>
-
+<br>
 <h2>Food Statistics</h2>
+<p>Food entry totals and those created in the past week or day.</p>
 <table class="table-custom">
     <tr>
-        <th>Total Food</th>
-        <th>Food Created in Past Week</th>
-        <th>Food Created in Past 24 Hours</th>
+        <th>Total</th>
+        <th>Past Week</th>
+        <th>Past Day</th>
     </tr>
     <tr>
         <td><?php echo $food_count; ?></td>
         <td><?php echo $weekly_food_count; ?></td>
         <td><?php echo $daily_food_count; ?></td>
+    </tr>
+</table>
+<br>
+<h2>Meal Statistics</h2>
+<p>Meal entry totals and those created in the past week or day.</p>
+<table class="table-custom">
+    <tr>
+        <th>Total</th>
+        <th>Past Week</th>
+        <th>Past Day</th>
+    </tr>
+    <tr>
+        <td><?php echo $total_meal_count; ?></td>
+        <td><?php echo $weekly_meal_count; ?></td>
+        <td><?php echo $daily_meal_count; ?></td>
     </tr>
 </table>
 

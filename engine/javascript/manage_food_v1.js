@@ -120,6 +120,7 @@ $(document).ready(function() {
     });
 
     function addNutrientField(name = '', amount = '', measurement = '') {
+        console.log("Name:", name);
         var newNutrient = $('<div class="nutrient-group row"><input type="text" class="nutrient form-control col" name="nutrients[]" value="' + name + '"><input type="text" class="nutrient-amount form-control col" name="nutrient-amounts[]" value="' + amount + '"><input type="text" class="nutrient-measurement form-control col" name="nutrient-measurements[]" value="' + measurement + '"><div class="col-auto"><button type="button" class="remove-nutrient btn btn-danger">X</button></div></div>');
         $('#nutrients').append(newNutrient);
     }

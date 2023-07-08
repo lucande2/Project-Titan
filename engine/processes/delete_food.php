@@ -1,6 +1,6 @@
 <?php
 // Include your database connection file
-include 'dbConnect.php';
+include '../dbConnect.php';
 
 // Get the food id from the URL
 $food_id = $_GET['id'];
@@ -26,6 +26,6 @@ foreach ($queries as $query) {
 mysqli_close($conn);
 
 // Redirect to the food list page
-header('Location: ../admin/manage_foods.php');
+header('Location: ../../admin/manage_foods.php');
 exit();
 ?>

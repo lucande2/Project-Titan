@@ -26,7 +26,7 @@ $food_items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Food Items</title>
-    <link rel="stylesheet" href="../../css/style_v7.css">
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
 <?php include '../../engine/header.php'; ?>

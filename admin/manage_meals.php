@@ -21,36 +21,36 @@ if (!filter_var($page, FILTER_VALIDATE_INT) || $page < 1) {
 $items_per_page = 20;
 $offset = ($page - 1) * $items_per_page;
 
-// Get users from database
-$result = mysqli_query($conn, "SELECT * FROM users LIMIT $offset, $items_per_page");
-$total_users = mysqli_query($conn, "SELECT COUNT(*) FROM users");
-$total_users = mysqli_fetch_array($total_users)[0];
-$total_pages = ceil($total_users / $items_per_page);
+// Get meals from database
+$result = mysqli_query($conn, "SELECT meals.id, meals.meal_type, users.username FROM meals JOIN users ON meals.user_id = users.id LIMIT $offset, $items_per_page");
+$total_meals = mysqli_query($conn, "SELECT COUNT(*) FROM meals");
+$total_meals = mysqli_fetch_array($total_meals)[0];
+$total_pages = ceil($total_meals / $items_per_page);
 ?>
 
-<h1>Manage Users</h1>
+<h1>Manage Meals</h1>
 
 <table class="table-custom">
     <tr>
+        <th>Meal ID</th>
         <th>Username</th>
-        <th>Email</th>
-        <th>Created At</th>
-        <th>Manage User</th>
+        <th>Meal Type</th>
+        <th>Manage Meal</th>
     </tr>
-    <?php while($user = mysqli_fetch_assoc($result)): ?>
+    <?php while($meal = mysqli_fetch_assoc($result)): ?>
         <tr>
-            <td><?php echo $user['username']; ?></td>
-            <td><?php echo $user['email']; ?></td>
-            <td><?php echo $user['created_at']; ?></td>
+            <td><?php echo $meal['id']; ?></td>
+            <td><?php echo $meal['username']; ?></td>
+            <td><?php echo $meal['meal_type']; ?></td>
             <td>
                 <div class="dropdown">
                     <button class="dropbtn">Action
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content">
-                        <a href="manage_user.php?username=<?php echo $user['username']; ?>">Manage</a>
-                        <a href="../content/profile.php?id=<?php echo $user['id']; ?>">View</a>
-                        <a href="#" onclick="confirmDelete(<?php echo $user['id']; ?>)">Delete</a>
+                        <a href="../content/meals/manage_meal.php?id=<?php echo $meal['id']; ?>">Manage</a>
+                        <a href="../content/meals/view_meal.php?id=<?php echo $meal['id']; ?>">View</a>
+                        <a href="#" onclick="confirmDelete(<?php echo $meal['id']; ?>)">Delete</a>
                     </div>
                 </div>
             </td>
@@ -68,9 +68,9 @@ $total_pages = ceil($total_users / $items_per_page);
 <?php include_once '../engine/footer.php'; ?>
 
 <script>
-    function confirmDelete(userId) {
-        if (confirm("Are you sure you want to delete this user?")) {
-            location.href = 'delete_user.php?id=' + userId;
+    function confirmDelete(mealId) {
+        if (confirm("Are you sure you want to delete this meal?")) {
+            location.href = '../engine/processes/delete_meal.php?id=' + mealId;
         }
     }
 </script>
