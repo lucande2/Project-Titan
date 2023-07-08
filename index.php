@@ -1,6 +1,10 @@
-
-
 <?php
+/*
+    index.php    VERSION 1.3
+    Site homepage.
+    Reviewed 7/8/2023
+*/
+
 define('ROOT_PATH', __DIR__ . '/');
 include_once ROOT_PATH . 'engine/header.php';
 ?>
