@@ -1,4 +1,9 @@
 <?php
+/*
+    engine/proccesses/analysis_meals.php    VERSION 1.3
+    Functions for the analysis centre pertaining to meals.
+    Reviewed 7/12/2023
+*/
 
 include_once '../../engine/dbConnect.php';
 
