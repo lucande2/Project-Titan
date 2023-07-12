@@ -1,4 +1,10 @@
 <?php
+/*
+    content/analysis/edit_values.php    VERSION 1.3
+    Allows a user to modify their values.
+    Reviewed 7/12/2023
+*/
+
 include_once '../../engine/header.php';
 include_once '../../engine/dbConnect.php';
 include_once '../../engine/processes/analysis_values.php';
@@ -12,6 +18,7 @@ $userValues = getUserValues2($userId, $conn);
 <script src="../../engine/javascript/preset_values.js"></script>
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
+<!--Page Starts-->
 <h2>Analysis Centre</h2>
 <ul class="centre-menu">
     <!-- Adding the links to the centre menu -->
