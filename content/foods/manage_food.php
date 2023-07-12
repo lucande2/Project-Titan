@@ -1,4 +1,9 @@
 <?php
+/*
+    content/foods/manage_food.php    VERSION 1.3
+    Make alterations to a food, grabbing the ID from POST.
+    Reviewed 7/12/2023
+*/
 
 // Start the session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -43,6 +48,7 @@ if(isset($_GET['id'])) {
 }
 ?>
 
+<!-- Page Starts -->
 <?php include '../../engine/header.php'; ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
