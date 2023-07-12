@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/fetch_meal_details.php    VERSION 1.3
+    Fetches meal details for use in view_meal, profiles, and analysis.
+    Reviewed 7/12/2023
+*/
+
 function getMealDetails($id, $conn) {
     $mealDetails = [];
 
