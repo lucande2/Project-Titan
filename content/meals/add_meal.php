@@ -1,7 +1,15 @@
-<?php include('../../engine/header.php'); ?>
+<?php include('../../engine/header.php'); 
+/*
+    content/meals/add_meal.php    VERSION 1.3
+    Allows a user to add a meal record.
+    Reviewed 7/12/2023
+*/
+?>
+
 <?php require_once('../../engine/dbConnect.php');
 ?>
 
+<!-- Page Starts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <h2>Add a Meal</h2>
