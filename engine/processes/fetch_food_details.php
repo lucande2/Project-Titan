@@ -1,4 +1,9 @@
 <?php
+/*
+    engine/proccesses/fetch_food_details.php    VERSION 1.3
+    Script which retrieves food details.  Functions are used in add_meal, view_food.
+    Reviewed 7/12/2023
+*/
 
 require(__DIR__ . '/../dbConnect.php');
 
