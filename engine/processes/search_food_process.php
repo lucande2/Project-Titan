@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/search_food_process.php    VERSION 1.3
+    Functionality for food searching on search_food.php
+    Reviewed 7/12/2023
+*/
+
 include_once("../dbConnect.php");
 
 if (isset($_POST["query"])) {
