@@ -1,4 +1,10 @@
 <?php
+/*
+    content/meals/manage_meal.php    VERSION 1.3
+    Allows a user to modify a meal record.  Grabs an ID from the POST.
+    Reviewed 7/12/2023
+*/
+
 include('../../engine/header.php');
 require_once('../../engine/dbConnect.php');
 require_once('../../engine/processes/fetch_meal_details.php');
@@ -7,6 +13,7 @@ $mealId = $_GET['id']; // retrieve meal id from query string
 $mealDetails = getMealDetails($mealId, $conn);
 ?>
 
+<!-- Page Starts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <h2>Manage Meal</h2>
@@ -22,7 +29,6 @@ $mealDetails = getMealDetails($mealId, $conn);
     <div class="form-group">
         <label for="meal_type">Meal Type:</label>
         <select id="meal_type" name="meal_type" class="form-control">
-            <!-- You'll need to adjust this part to select the correct meal type -->
             <option value="Breakfast" <?php if($mealDetails['meal']['meal_type'] == 'Breakfast') echo 'selected'; ?>>Breakfast</option>
             <option value="Lunch" <?php if($mealDetails['meal']['meal_type'] == 'Lunch') echo 'selected'; ?>>Lunch</option>
             <option value="Dinner" <?php if($mealDetails['meal']['meal_type'] == 'Dinner') echo 'selected'; ?>>Dinner</option>
