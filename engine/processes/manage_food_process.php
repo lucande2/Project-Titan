@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/manage_food_process.php    VERSION 1.3
+    Script for updating food records.
+    Reviewed 7/12/2023
+*/
+
 require_once '../../engine/dbConnect.php';
 
 ini_set('display_errors', 1);
