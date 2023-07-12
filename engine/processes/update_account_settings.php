@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/update_account_settings.php    VERSION 1.3
+    Script for updating account settings based on provided values on account_settings.php
+    Reviewed 7/12/2023
+*/
+
 session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
