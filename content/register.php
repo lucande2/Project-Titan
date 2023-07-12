@@ -1,4 +1,10 @@
 <?php
+/*
+    content/register.php    VERSION 1.3
+    Allows a user to register a new user.
+    Reviewed 7/12/2023
+*/
+
 include_once '../engine/dbConnect.php';
 include_once '../engine/processes/analysis_preset.php';
 
@@ -60,6 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 include_once '../engine/header.php';
 ?>
+
+<!-- Page Starts -->
 <?php if ($registrationSuccessful): ?>
     <p>Your account <?php echo htmlspecialchars($username); ?> has been created.</p>
 <?php else: ?>
