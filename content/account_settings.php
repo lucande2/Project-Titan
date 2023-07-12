@@ -1,4 +1,10 @@
 <?php
+/*
+    content/account_settings.php    VERSION 1.3
+    Allows a user to make changes to their profile.
+    Reviewed 7/12/2023
+*/
+
 include_once '../engine/header.php';
 //session_start();
 
@@ -12,6 +18,7 @@ $result = $query->get_result();
 $user = $result->fetch_assoc();
 ?>
 
+<!-- Page starts -->
 <form action="../engine/processes/update_account_settings.php" method="post">
     <div class="data-section">
         <h2>Account Information</h2>
@@ -77,8 +84,6 @@ $user = $result->fetch_assoc();
                         <option value="pumpkin" <?php echo $user['site_theme'] == 'pumpkin' ? 'selected' : ''; ?>>Pumpkin Coffee</option>
                         <option value="pizza" <?php echo $user['site_theme'] == 'pizza' ? 'selected' : ''; ?>>Pizza</option>
                         <option value="lemon" <?php echo $user['site_theme'] == 'lemon' ? 'selected' : ''; ?>>Lemonade</option>
-
-                        <!-- Add other themes options here -->
                     </select>
                 </p>
         </div>
