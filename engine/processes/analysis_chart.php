@@ -1,4 +1,9 @@
 <?php
+/*
+    engine/proccesses/analysis_chart.php    VERSION 1.3
+    Script which determines colours in pie ring charts on analysis centre screens.
+    Reviewed 7/12/2023
+*/
 
 include_once '../../engine/dbConnect.php';
 
