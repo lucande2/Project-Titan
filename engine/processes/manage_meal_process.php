@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/manage_meal_process.php    VERSION 1.3
+    Code for meal modification.
+    Reviewed 7/12/2023
+*/
+
 // Include your database connection file
 require('../dbConnect.php');
 
