@@ -1,4 +1,9 @@
 <?php
+/*
+    content/policies/privacy_policy.php    VERSION 1.3
+    The privacy policy
+    Reviewed 7/12/2023
+*/
 include_once '../../engine/header.php';
 ?>
 
