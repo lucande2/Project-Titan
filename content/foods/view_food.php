@@ -1,4 +1,10 @@
 <?php
+/*
+    content/foods/view_food.php    VERSION 1.3
+    Allows a user to view a food item's record.  Grabs an ID from the POST.
+    Reviewed 7/12/2023
+*/
+
 session_start();
 require_once '../../engine/dbConnect.php';
 include '../../engine/header.php';
@@ -52,6 +58,7 @@ $tags = $result->fetch_all(MYSQLI_ASSOC);
 $conn->close();
 ?>
 
+<!-- Page Starts -->
 <h1><?php echo htmlspecialchars($food['name']); ?></h1>
 <div class="data-section">
     <h2>Details</h2>
