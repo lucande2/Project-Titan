@@ -1,4 +1,10 @@
 <?php
+/*
+    content/login.php    VERSION 1.3
+    Allows a user to sign into an account.
+    Reviewed 7/12/2023
+*/
+
 include '../engine/dbConnect.php';
 include '../engine/header.php';
 
@@ -49,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+    <!-- Page Starts -->
 <h1>Login!</h1>
 <p>Please enter your account details.  You can also stay logged in for two weeks if you check "remember me", but do
     not do this on a public computer!</p>
