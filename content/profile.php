@@ -1,4 +1,12 @@
 <?php
+/*
+    content/profile.php    VERSION 1.3
+    Allows a user to view the meals on their record in chronological order.
+
+    TODO: Implment privacy
+    Reviewed 7/12/2023
+*/
+
 include('../engine/dbConnect.php'); // Include the dbConnect file
 include('../engine/header.php'); // Include the header file
 include('../engine/processes/fetch_meal_details.php'); // Include the header file
@@ -13,6 +21,7 @@ $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 ?>
 
+<!-- Page Starts -->
 <!-- User Information -->
 <div class="data-section">
     <h2>User Profile</h2>
