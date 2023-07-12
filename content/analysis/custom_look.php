@@ -1,4 +1,10 @@
 <?php
+/*
+    content/analysis/custom_look.php    VERSION 1.3
+    Allows a user to view an analysis of their meals in a custom date range.
+    Reviewed 7/12/2023
+*/
+
 
 include_once '../../engine/header.php';
 include_once '../../engine/dbConnect.php';
@@ -85,6 +91,7 @@ foreach($analysisResults as $date => $dayAnalysis) {
 }
 ?>
 
+<!-- Page Starts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
@@ -199,7 +206,7 @@ foreach($mealsInRange as $date => $meals) {
         echo "<table class='table-custom'>";
         echo "<tr><th>Nutrient</th><th>Daily Recommended Total</th><th>Total Daily Intake</th><th>Analysis</th></tr>"; // add Analysis column
 
-        // We will use linkedValues to map the nutrients correctly
+        // map the nutrients correctly
         $linkedDailyMealTotals = linkValues($dailyMealTotals[$date], $conn);
 
         foreach ($userValues as $value) {
@@ -253,10 +260,10 @@ include_once '../../engine/footer.php';
             responsive: true,
             plugins: {
                 legend: {
-                    display: false, // Set display to false
+                    display: false,
                 }
             },
-            cutout: '50%', // Set this option for a ring-like chart
+            cutout: '50%', 
         }
     };
 
