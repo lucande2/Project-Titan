@@ -1,4 +1,9 @@
 <?php
+/*
+    engine/header.php    VERSION 1.3
+    Loads the necessary page requisites, styling, and establishes the header, sidebar, and centre content.
+    Reviewed 7/12/2023
+*/
 
 // Define path
 include_once dirname(__FILE__) . '/dbConnect.php';
