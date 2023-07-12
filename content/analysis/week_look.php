@@ -1,4 +1,9 @@
 <?php
+/*
+    content/analysis/week_look.php    VERSION 1.3
+    Allows a user to view their week analysis starting on the previous Sunday.  It also allows the previous week.
+    Reviewed 7/12/2023
+*/
 
 include_once '../../engine/header.php';
 include_once '../../engine/dbConnect.php';
@@ -102,6 +107,7 @@ foreach($analysisResults as $date => $dayAnalysis) {
 }
 ?>
 
+<!-- Page Starts-->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
@@ -187,11 +193,10 @@ foreach($mealsInRange as $date => $meals) {
         'date' => $date,
     ];
 
-    // Add the data for this day to the array of all days' data.
     $chartData[] = $chartDataForDay;
 
     // Create table
-    echo '<div class="chart-data-table">'; // Apply your desired styling to this class in your CSS
+    echo '<div class="chart-data-table">'; 
     echo '<table class="table-custom">';
     echo "<tr><th>Color</th><th>Label</th><th>Count</th></tr>";
     foreach ($analysisData[$date] as $analysisType => $typeData) {
@@ -211,7 +216,7 @@ foreach($mealsInRange as $date => $meals) {
         echo "<table class='table-custom'>";
         echo "<tr><th>Nutrient</th><th>Daily Recommended Total</th><th>Total Daily Intake</th><th>Analysis</th></tr>"; // add Analysis column
 
-        // We will use linkedValues to map the nutrients correctly
+        // map the nutrients correctly
         $linkedDailyMealTotals = linkValues($dailyMealTotals[$date], $conn);
 
         foreach ($userValues as $value) {
@@ -260,12 +265,12 @@ include_once '../../engine/footer.php';
     // Convert chartData PHP array to JavaScript array
     var chartData = <?php echo json_encode($chartData); ?>;
     var chartOptions = {
-        type: 'doughnut', // Change type to 'doughnut'
+        type: 'doughnut', 
         options: {
             responsive: true,
             plugins: {
                 legend: {
-                    display: false, // Set display to false
+                    display: false,
                 }
             },
             cutout: '50%', // Set this option for a ring-like chart
