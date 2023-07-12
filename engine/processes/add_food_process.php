@@ -1,4 +1,9 @@
 <?php
+/*
+    engine/proccesses/add_food_process.php    VERSION 1.3
+    Script for add_food.php processing
+    Reviewed 7/12/2023
+*/
 
 session_start();
 require_once '../../engine/dbConnect.php';
