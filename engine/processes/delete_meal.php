@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/delete_meal.php    VERSION 1.3
+    The script for meal deletion.
+    Reviewed 7/12/2023
+*/
+
 include '../dbConnect.php';
 
 // Check if user is logged in
