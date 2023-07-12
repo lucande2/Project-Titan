@@ -1,4 +1,10 @@
 <?php
+/*
+    content/meals/view_meal.php    VERSION 1.3
+    Allows a user to view a meal, takes an ID from POST.
+    Reviewed 7/12/2023
+*/
+
 session_start();
 require_once '../../engine/dbConnect.php';
 include '../../engine/header.php';
@@ -13,6 +19,8 @@ require_once '../../engine/processes/fetch_meal_details.php';
 $mealDetails = getMealDetails($id, $conn);
 
 ?>
+
+<!-- Page Starts -->
 
 <link rel="stylesheet" href="../../css/charts.css?v=1.02">
 
@@ -100,7 +108,6 @@ $mealDetails = getMealDetails($id, $conn);
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
             <?php
-            // Added this PHP function
             function generateNutrientColor($index) {
                 $hue = ($index * 15) % 360; // Adjust the hue increment to control the color gradient
                 return 'hsl(' . $hue . ', 70%, 50%)';
