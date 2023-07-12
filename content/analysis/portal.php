@@ -1,4 +1,10 @@
 <?php
+/*
+    content/analysis/portal.php    VERSION 1.3
+    Homepage for the Analysis Centre
+    Reviewed 7/12/2023
+*/
+
 // Include header file and connection
 include('../../engine/header.php');
 include('../../engine/dbConnect.php');
@@ -8,6 +14,7 @@ $userId = $_SESSION["user-id"];
 
 ?>
 
+<!--Page Starts-->
 <h2>Analysis Centre</h2>
     <ul class="centre-menu">
         <!-- Adding the links to the center menu -->
