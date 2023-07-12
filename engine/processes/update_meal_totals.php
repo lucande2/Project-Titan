@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/update_meal_totals.php    VERSION 1.3
+    Script which is used to update the meal_totals table for when meals are updated.
+    Reviewed 7/12/2023
+*/
+
 require(__DIR__ . '/../dbConnect.php');
 require(__DIR__ . '/fetch_food_details.php');
 
