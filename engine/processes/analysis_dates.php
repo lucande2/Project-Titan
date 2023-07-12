@@ -1,4 +1,9 @@
 <?php
+/*
+    engine/proccesses/analysis_dates.php    VERSION 1.3
+    Functions for analysis centre pertaining to the dates.  Used specifically in week_ and custom_look.php
+    Reviewed 7/12/2023
+*/
 
 //include_once '../dbConnect.php';
 include_once '../../engine/dbConnect.php';
