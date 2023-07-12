@@ -1,7 +1,14 @@
 <?php
+/*
+    content/foods/search_foods.php    VERSION 1.3
+    Search page where queries to the foods database can be made.
+    Reviewed 7/12/2023
+*/
+
 include_once("../../engine/dbConnect.php");
 include("../../engine/header.php");
 ?>
+<!-- Page Starts -->
 <h1>Search Food Database</h1>
 <p>This search will let you find items by the brand or food name.  You can then view or manage the meal entry from the
 actions menu.</p>
