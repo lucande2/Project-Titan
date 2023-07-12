@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/delete_food.php    VERSION 1.3
+    Script which deletes a food item, and records in the relevant tables.
+    Reviewed 7/12/2023
+*/
+
 // Include your database connection file
 include '../dbConnect.php';
 
