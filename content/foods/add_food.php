@@ -1,4 +1,10 @@
 <?php
+/*
+    content/foods/.php    VERSION 1.3
+    THe page where food can be added to the database.
+    Reviewed 7/12/2023
+*/
+
 // Start the session
 session_start();
 
@@ -9,6 +15,7 @@ if (!isset($_SESSION['username'])) {
 }
 ?>
 
+<!-- Page Starts -->
 <?php include '../../engine/header.php'; ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
