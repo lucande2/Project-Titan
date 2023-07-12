@@ -1,4 +1,10 @@
 <?php
+/*
+    engine/proccesses/add_meal_process    VERSION 1.3
+    Processing script for add_meal.php
+    Reviewed 7/12/2023
+*/
+
 // Include your database connection file
 require('../dbConnect.php');
 
@@ -24,8 +30,6 @@ $meal_type = filter_input(INPUT_POST, 'meal_type', FILTER_SANITIZE_STRING);
 $food_list_data = json_decode($_POST['food_list_data'], true);
 $meal_notes = filter_input(INPUT_POST, 'meal_notes', FILTER_SANITIZE_STRING);
 
-
-//...
 //echo "User ID: " . $user_id . "<br>";
 
 // Prepare SQL statement to insert the meal into the meals table
