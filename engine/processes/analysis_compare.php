@@ -1,4 +1,11 @@
 <?php
+/*
+    engine/proccesses/analysis_compare.php    VERSION 1.3
+    The brains of the analysis centre.  Takes the values, classifies them in a rule group. 
+    TODO:  Finish fats
+    Reviewed 7/12/2023
+*/
+
 include_once '../dbConnect.php';
 //include_once '../../engine/dbConnect.php';
 include_once 'analysis_meals.php';
