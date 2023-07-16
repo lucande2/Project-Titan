@@ -5,6 +5,7 @@
     Reviewed 7/12/2023
 */
 
+// Include analysis functions
 include_once '../../engine/header.php';
 include_once '../../engine/dbConnect.php';
 include_once '../../engine/processes/analysis_dates.php';
@@ -70,6 +71,14 @@ $linkedDailyMealTotals = linkValues($dailyMealTotals, $conn);
 // Call the analysis_compare function to compute the analysis results
 $analysisResults = analysis_compare($userValues, $linkedDailyMealTotals);
 
+// Add units to the linkedValues and MealTotals
+$linkedValuesWithUnits = addUnits($linkedValues);
+
+$linkedDailyMealTotalsWithUnits = array();
+foreach ($linkedDailyMealTotals as $date => $dailyValues) {
+    $linkedDailyMealTotalsWithUnits[$date] = addUnits($dailyValues);
+}
+
 // Get the averages
 $averages = getAverages($analysisResults);
 
@@ -121,6 +130,8 @@ foreach($analysisResults as $date => $dayAnalysis) {
 <br><
 <div class="data-section">
     <h1>Your Week</h1>
+    <p>This page shows your nutritional intake versus your daily recommendations.  You can choose to view a custom range or
+    the previous week.  The week starts on Sunday.</p>
     <a href="week_look.php?id=<?= $userId ?>&prevSunday=<?= date('Y-m-d', strtotime($lastSunday. ' - 1 week')) ?>"
        class="btn btn-primary">Previous Week</a>
     <a href="custom_look.php?id=<?= $userId ?>" class="btn btn-secondary">Custom Range</a>
@@ -157,6 +168,7 @@ foreach($analysisResults as $date => $dayAnalysis) {
             </tbody>
         </table>
         <h3>Most Troublesome Nutrients</h3>
+        <p>Displays the number of days a nutrient recommendation was not followed.</p>
         <ul>
             <?php foreach($topTroublesome as $nutrient => $count) : ?>
                 <li><?= $nutrient ?>: <?= $count ?> days</li>
@@ -196,7 +208,7 @@ foreach($mealsInRange as $date => $meals) {
     $chartData[] = $chartDataForDay;
 
     // Create table
-    echo '<div class="chart-data-table">'; 
+    echo '<div class="chart-data-table">';
     echo '<table class="table-custom">';
     echo "<tr><th>Color</th><th>Label</th><th>Count</th></tr>";
     foreach ($analysisData[$date] as $analysisType => $typeData) {
@@ -216,20 +228,20 @@ foreach($mealsInRange as $date => $meals) {
         echo "<table class='table-custom'>";
         echo "<tr><th>Nutrient</th><th>Daily Recommended Total</th><th>Total Daily Intake</th><th>Analysis</th></tr>"; // add Analysis column
 
-        // map the nutrients correctly
-        $linkedDailyMealTotals = linkValues($dailyMealTotals[$date], $conn);
+    // map the nutrients correctly
+    $linkedDailyMealTotalsWithUnits = addUnits(linkValues($dailyMealTotals[$date], $conn));
 
-        foreach ($userValues as $value) {
-            $nutrient_name = $value['nutrient_name'];
-            echo "<tr>";
-            echo "<td>" . $nutrient_name . "</td>";
-            echo "<td>" . $value['ac_amount'] . " " . $value['measurement_name'] . "</td>";
-            // check if nutrient is available in the daily meal totals
-            if (array_key_exists($nutrient_name, $linkedDailyMealTotals)) {
-                echo "<td>" . $linkedDailyMealTotals[$nutrient_name] . "</td>";
-            } else {
-                echo "<td>0</td>"; // Or any value to indicate no consumption of this nutrient in this day
-            }
+    foreach ($userValues as $value) {
+        $nutrient_name = $value['nutrient_name'];
+        echo "<tr>";
+        echo "<td>" . $nutrient_name . "</td>";
+        echo "<td>" . $value['ac_amount'] . " " . $value['measurement_name'] . "</td>";
+        // check if nutrient is available in the daily meal totals
+        if (array_key_exists($nutrient_name, $linkedDailyMealTotalsWithUnits)) {
+            echo "<td>" . $linkedDailyMealTotalsWithUnits[$nutrient_name] . "</td>";
+        } else {
+            echo "<td>0</td>"; // Or any value to indicate no consumption of this nutrient in this day
+        }
 
             // add analysis column
             if (isset($analysisResults[$date][$nutrient_name])) {
@@ -265,7 +277,7 @@ include_once '../../engine/footer.php';
     // Convert chartData PHP array to JavaScript array
     var chartData = <?php echo json_encode($chartData); ?>;
     var chartOptions = {
-        type: 'doughnut', 
+        type: 'doughnut',
         options: {
             responsive: true,
             plugins: {

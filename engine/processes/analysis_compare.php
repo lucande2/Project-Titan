@@ -1,7 +1,7 @@
 <?php
 /*
     engine/proccesses/analysis_compare.php    VERSION 1.3
-    The brains of the analysis centre.  Takes the values, classifies them in a rule group. 
+    The brains of the analysis centre.  Takes the values, classifies them in a rule group.
     TODO:  Finish fats
     Reviewed 7/12/2023
 */
@@ -109,6 +109,9 @@ function analysis_compare($userValues, $dailyMealTotals) {
                 case 'Sodium':
                 case 'Sugars':
                 case 'Calories':
+                case 'Fat':
+                case 'Trans Fat':
+                case 'Saturated Fat':
                     $result = analysis_rules_group2($nutrient_name, $userDefinedValue, $actualValue);
                     break;
 

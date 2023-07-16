@@ -41,6 +41,7 @@ function getIngredientsByFoodID($id, $conn) {
             while($row = $result->fetch_assoc()) {
                 $ingredients[] = $row['name'];
             }
+
             return $ingredients;
         }
         $stmt->close();

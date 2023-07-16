@@ -127,7 +127,9 @@ function linkValues($totals, $conn) {
         'total_sugars' => 'Sugars',
         'total_proteins' => 'Proteins',
         'total_sodium' => 'Sodium',
-        'total_fat' => 'Fats',
+        'total_fat' => 'Fat',
+        'total_saturated_fats' => 'Saturated Fat',
+        'total_trans_fats' => 'Trans Fat',
         'total_calcium' => 'Calcium',
         'total_chloride' => 'Chloride',
         'total_chromium' => 'Chromium',
@@ -165,7 +167,9 @@ function linkValues($totals, $conn) {
         'Sugars' => 1,
         'Proteins' => 1,
         'Sodium' => 1,
-        'Fats' => 1,
+        'Fat' => 1,
+        'Trans Fat' => 1,
+        'Saturated Fat' => 1,
         'Calcium' => 1000,  // From mcg to mg
         'Chloride' => 1000, // From mcg to mg
         'Chromium' => 1000, // From mcg to mg
@@ -221,3 +225,31 @@ function linkValues($totals, $conn) {
     return $totals;
 
 }
+
+function addUnits($values) {
+    $units = array(
+        'total_saturated_fats' => ' g',
+        'total_trans_fats' => ' g',
+        'Calories' => ' cal',
+        'Cholesterol' => ' mg',
+        'Fibres' => ' g',
+        'Sugars' => ' g',
+        'Sodium' => ' mg',
+        'Fats' => ' g',
+    );
+
+    foreach ($values as $key => $value) {
+        if (isset($units[$key])) {
+            $values[$key] .= $units[$key];
+        } else if ($key !== 'ingredient_list') {
+            if ($value > 1000) {
+                $values[$key] = ($value / 1000) . ' mg';
+            } else {
+                $values[$key] .= ' mcg';
+            }
+        }
+    }
+
+    return $values;
+}
+

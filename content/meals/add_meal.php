@@ -1,4 +1,4 @@
-<?php include('../../engine/header.php'); 
+<?php include('../../engine/header.php');
 /*
     content/meals/add_meal.php    VERSION 1.3
     Allows a user to add a meal record.

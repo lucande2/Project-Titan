@@ -17,6 +17,7 @@ $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 // Fetch data from fetch_meal_details.php
 require_once '../../engine/processes/fetch_meal_details.php';
 $mealDetails = getMealDetails($id, $conn);
+$ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
 
 ?>
 
@@ -38,6 +39,16 @@ $mealDetails = getMealDetails($id, $conn);
         <?php endforeach; ?>
     </ul>
 </div>
+
+<div class="data-section">
+    <h2>Ingredients</h2>
+    <ul>
+        <?php foreach ($ingredients as $ingredient) : ?>
+            <li><?php echo htmlspecialchars($ingredient); ?></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
 
 <div class="data-section">
     <h2>Macronutrients</h2>
@@ -117,8 +128,20 @@ $mealDetails = getMealDetails($id, $conn);
             $colorIndex = 0;
 
             foreach ($mealDetails['totals'] as $key => $value) {
-                if ($value > 0 && strpos($key, 'total_') === 0 && !in_array($key, ['total_proteins', 'total_sugars', 'total_sodium', 'total_calories', 'total_dietary_fibres', 'total_cholesterol', 'total_fat', 'total_saturated_fats', 'total_trans_fats'])) {
+                if ($value > 0 && strpos($key, 'total_') === 0 && !in_array($key, ['total_proteins', 'total_sugars',
+                        'total_sodium', 'total_calories', 'total_dietary_fibres', 'total_cholesterol', 'total_fat',
+                        'total_saturated_fats', 'total_trans_fats'])) {
                     $nutrientName = str_replace('_', ' ', ucfirst(str_replace('total_', '', $key)));
+
+                    // Check if value is greater than 1000
+                    if ($value > 1000) {
+                        $value = $value / 1000; // Convert to milligrams
+                        $value = round($value, 2); // Optional: round the value to 2 decimal places
+                        $value .= " mg"; // Append "mg"
+                    } else {
+                        $value .= " mcg"; // Append "mcg"
+                    }
+
                     $micronutrients[] = [
                         'label' => $nutrientName,
                         'value' => $value,

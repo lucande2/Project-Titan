@@ -51,10 +51,15 @@ function update_meal_totals($meal_id, $conn, $food_id, $servings)
     $params = [];
     $types = "";
 
-// Update ingredient list
-    $updates[] = "ingredient_list = CONCAT(ingredient_list, ', ', ?)";
+    // Update ingredient list
+    $updates[] = "ingredient_list = TRIM(LEADING ',' FROM TRIM(LEADING ' ' FROM CONCAT(IFNULL(ingredient_list, ''), ', ', ?)))";
     $params[] = $ingredient_list;
     $types .= "s";
+
+    // DEBUG
+    //var_dump($ingredients);
+    //var_dump($ingredient_list);
+    //die();
 
     foreach ($nutrients as $nutrient) {
         $nutrientName = $nutrient['name'];
@@ -108,6 +113,10 @@ function update_meal_totals($meal_id, $conn, $food_id, $servings)
 
     // Concatenate updates to the query
     $query .= implode(', ', $updates);
+
+    // DEBUG
+    //var_dump($query);
+    //die();
 
     // Add the meal_id condition
     $query .= " WHERE meal_id = ?";

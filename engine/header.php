@@ -45,13 +45,18 @@ if (isset($_SESSION['username'])) {
 <html>
 <head>
     <title>Titan</title>
-    <link rel="stylesheet" href="../css/style.css?v=1.46">
-    <link rel="stylesheet" href="../../css/style.css?v=1.46">
 
     <?php if (isset($userTheme)): ?>
-        <link rel="stylesheet" href="../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.50">
-        <link rel="stylesheet" href="../../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.50">
+        <link rel="stylesheet" href="../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.53">
+        <link rel="stylesheet" href="../../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.53">
+    <?php else: ?>
+        <link rel="stylesheet" href="../css/blueberry.css?v=1.53">
+        <link rel="stylesheet" href="../../css/blueberry.css?v=1.53">
     <?php endif; ?>
+
+
+       <link rel="stylesheet" href="../css/style.css?v=1.63">
+    <link rel="stylesheet" href="../../css/style.css?v=1.63">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,10 +67,10 @@ if (isset($_SESSION['username'])) {
 
 <div class="top-bar">
     <div class="top-bar-container">
-
-        <a href="https://project.lucande.io/index.php"><img src="https://images.lucande.io/galleries//system/logo.png" alt="Logo"></a>
-
-        <span class="sub-logo">TITAN</span>
+        <div class="logo-container">
+            <a href="https://project.lucande.io/index.php"><img src="https://images.lucande.io/galleries//system/logo.png" alt="Logo"></a>
+            <span class="sub-logo"><a href="https://project.lucande.io/index.php">TITAN</a></span>
+        </div>
         <div class="links">
             <?php if (isset($_SESSION['username'])): ?>
                 <div class="user-info">

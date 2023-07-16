@@ -13,6 +13,25 @@ include('../engine/processes/fetch_meal_details.php'); // Include the header fil
 // Assuming user id is passed as GET parameter
 $userId = $_GET['id'];
 
+// Grab the user id of the logged in user.
+$loggedInUserId = $_SESSION['user-id'];
+
+// Check if the user's profile is private.
+if($loggedInUserId != $userId) {
+    $privacyQuery = "SELECT profile_privacy FROM users WHERE id = ?";
+    $stmt = $conn->prepare($privacyQuery);
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $profilePrivacy = $stmt->get_result()->fetch_assoc()['profile_privacy'];
+
+    if($profilePrivacy == 1) {
+        // Profile is private. Redirect to an error page or show a message
+        header("Location: error.php");
+        exit();
+    }
+}
+
+
 // Fetch user information from the database
 $userQuery = "SELECT id, username, health_focus, dietary_restrictions FROM users WHERE id = ?";
 $stmt = $conn->prepare($userQuery);

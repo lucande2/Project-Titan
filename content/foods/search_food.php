@@ -8,6 +8,7 @@
 include_once("../../engine/dbConnect.php");
 include("../../engine/header.php");
 ?>
+
 <!-- Page Starts -->
 <h1>Search Food Database</h1>
 <p>This search will let you find items by the brand or food name.  You can then view or manage the meal entry from the

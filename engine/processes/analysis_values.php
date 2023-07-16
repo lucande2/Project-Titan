@@ -81,7 +81,7 @@ function multiplyUserValues($userValues, $days) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["new_amount"])) {
         $userId = $_POST['user_id'];
-        include_once '../../engine/dbConnect.php'; 
+        include_once '../../engine/dbConnect.php';
         if(updateUserValues($userId, $_POST["new_amount"], $conn)){
             header("Location: /content/analysis/values.php?id=".$userId);
             exit;

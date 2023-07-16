@@ -49,7 +49,7 @@ $mealDetails = getMealDetails($mealId, $conn);
         </tr>
         <?php
         foreach($mealDetails['foods'] as $food){
-            echo "<tr data-id='{$food['id']}'><td>1 serving</td><td>{$food['brand']}: {$food['name']} ({$food['serving_size']} {$food['serving_measurement']})</td><td><button type='button' class='remove btn btn-danger btn-sm'>Remove</button> <button type='button' class='decrement btn btn-secondary btn-sm'>-</button> <button type='button' class='increment btn btn-secondary btn-sm'>+</button></td></tr>";
+            echo "<tr data-id='{$food['id']}'><td>{$food['servings']} servings</td><td>{$food['brand']}: {$food['name']} ({$food['serving_size']} {$food['serving_measurement']})</td><td><button type='button' class='remove btn btn-danger btn-sm'>Remove</button> <button type='button' class='decrement btn btn-secondary btn-sm'>-</button> <button type='button' class='increment btn btn-secondary btn-sm'>+</button></td></tr>";
         }
         ?>
 

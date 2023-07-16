@@ -5,7 +5,7 @@
     Reviewed 7/12/2023
 */
 
-
+// Include functions
 include_once '../../engine/header.php';
 include_once '../../engine/dbConnect.php';
 include_once '../../engine/processes/analysis_dates.php';
@@ -53,6 +53,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Call the analysis_compare function to compute the analysis results
     $analysisResults = analysis_compare($userValues, $linkedDailyMealTotals);
+
+    // Add units to the linkedValues and MealTotals
+    $linkedValuesWithUnits = addUnits($linkedValues);
+
+    $linkedDailyMealTotalsWithUnits = array();
+    foreach ($linkedDailyMealTotals as $date => $dailyValues) {
+        $linkedDailyMealTotalsWithUnits[$date] = addUnits($dailyValues);
+    }
 
     // Get the averages
     $averages = getAverages($analysisResults);
@@ -105,54 +113,66 @@ foreach($analysisResults as $date => $dayAnalysis) {
 <br>
 <div class="data-section">
     <h1>Specify Date Range</h1>
+    <p>You can specify a custom date range up to a maximum of <b>30 (thirty) days</b>.</p>
     <form action="" method="post">
-        <label for="startDate">Start Date:</label>
+        <label for="startDate" style="color: black">Start Date:</label>
         <input type="date" name="startDate" id="startDate">
-        <label for="endDate">End Date:</label>
+        <label for="endDate" style="color: black">End Date:</label>
         <input type="date" name="endDate" id="endDate">
         <br><br>
         <input type="submit" value="Submit">
     </form>
 </div>
 
-<!-- Summary Section -->
-<div class="data-section">
-    <h2>Summary</h2>
-    <!-- Most Troublesome Nutrients -->
-    <div>
-        <h3>Average Nutritional Intake</h3>
-        <p>Displays how often recommendations were met or exceeded in the date range.</p>
-        <table class="table-custom">
-            <thead>
-            <tr>
-                <th>Category</th>
-                <th>Average</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php $averages = getAverages($analysisResults); ?>
-            <tr>
-                <td>Good</td>
-                <td><?php echo number_format($averages['good'] * 100, 2); ?>%</td>
-            </tr>
-            <tr>
-                <td>Too Low</td>
-                <td><?php echo number_format($averages['low'] * 100, 2); ?>%</td>
-            </tr>
-            <tr>
-                <td>Too High</td>
-                <td><?php echo number_format($averages['high'] * 100, 2); ?>%</td>
-            </tr>
-            </tbody>
-        </table>
-        <h3>Most Troublesome Nutrients</h3>
-        <ul>
-            <?php foreach($topTroublesome as $nutrient => $count) : ?>
-                <li><?= $nutrient ?>: <?= $count ?> days</li>
-            <?php endforeach; ?>
-        </ul>
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    ?>
+
+    <!-- Summary Section -->
+    <div class="data-section">
+        <h2>Summary</h2>
+        <!-- Most Troublesome Nutrients -->
+        <div>
+            <h3>Average Nutritional Intake</h3>
+            <p>Displays how often recommendations were met or exceeded in the date range.</p>
+            <table class="table-custom">
+                <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Average</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $averages = getAverages($analysisResults); ?>
+                <tr>
+                    <td>Good</td>
+                    <td><?php echo number_format($averages['good'] * 100, 2); ?>%</td>
+                </tr>
+                <tr>
+                    <td>Too Low</td>
+                    <td><?php echo number_format($averages['low'] * 100, 2); ?>%</td>
+                </tr>
+                <tr>
+                    <td>Too High</td>
+                    <td><?php echo number_format($averages['high'] * 100, 2); ?>%</td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Most Troublesome Nutrients</h3>
+            <p>Displays the number of days a nutrient recommendation was not followed.</p>
+            <ul>
+                <?php foreach($topTroublesome as $nutrient => $count) : ?>
+                    <li><?= $nutrient ?>: <?= $count ?> days</li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </div>
-</div>
+
+    <?php
+} // End of if statement checking if form has been submitted
+?>
+
+
 
 <!-- Day-by-Day Breakout -->
 <?php
@@ -207,16 +227,16 @@ foreach($mealsInRange as $date => $meals) {
         echo "<tr><th>Nutrient</th><th>Daily Recommended Total</th><th>Total Daily Intake</th><th>Analysis</th></tr>"; // add Analysis column
 
         // map the nutrients correctly
-        $linkedDailyMealTotals = linkValues($dailyMealTotals[$date], $conn);
+        $linkedDailyMealTotalsWithUnits = addUnits(linkValues($dailyMealTotals[$date], $conn));
 
         foreach ($userValues as $value) {
             $nutrient_name = $value['nutrient_name'];
             echo "<tr>";
             echo "<td>" . $nutrient_name . "</td>";
             echo "<td>" . $value['ac_amount'] . " " . $value['measurement_name'] . "</td>";
-                // check if nutrient is available in the daily meal totals
-            if (array_key_exists($nutrient_name, $linkedDailyMealTotals)) {
-                echo "<td>" . $linkedDailyMealTotals[$nutrient_name] . "</td>";
+            // check if nutrient is available in the daily meal totals
+            if (array_key_exists($nutrient_name, $linkedDailyMealTotalsWithUnits)) {
+                echo "<td>" . $linkedDailyMealTotalsWithUnits[$nutrient_name] . "</td>";
             } else {
                 echo "<td>0</td>"; // Or any value to indicate no consumption of this nutrient in this day
             }
@@ -263,7 +283,7 @@ include_once '../../engine/footer.php';
                     display: false,
                 }
             },
-            cutout: '50%', 
+            cutout: '50%',
         }
     };
 

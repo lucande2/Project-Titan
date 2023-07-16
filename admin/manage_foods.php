@@ -1,4 +1,5 @@
 <?php
+
 /*
     admin/manage_foods.php    VERSION 1.3
     Accessed from the administrative portal.  Allows an administrator the ability to see, delete, and manage foods.
