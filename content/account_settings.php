@@ -19,7 +19,7 @@ $user = $result->fetch_assoc();
 ?>
 
 <!-- Page starts -->
-<form action="../engine/processes/update_account_settings.php" method="post">
+<form id="account-settings-form" action="../engine/processes/update_account_settings.php" method="post">
     <div class="data-section">
         <h2>Account Information</h2>
         <div class="row">
@@ -166,7 +166,7 @@ $user = $result->fetch_assoc();
     }
 
     function checkRecommended() {
-        var recommendedNutrients = [1, 7, 8, 11, 12, 13, 15, 16, 17, 23, 24, 25, 26, 28, 29, 30, 32, 34];
+        var recommendedNutrients = [1, 7, 8, 11, 12, 13, 15, 16, 17, 23, 24, 25, 26, 28, 29, 30, 32, 34, 35, 36];
 
         var checkboxes = document.getElementsByName('tracked_nutrients[]');
         for (var i = 0; i < checkboxes.length; i++) {
@@ -185,6 +185,15 @@ $user = $result->fetch_assoc();
             event.preventDefault();
         });
     }
+
+    document.getElementById("account-settings-form").addEventListener("submit", function(event){
+        var username = document.getElementById("username").value;
+
+        if (username.trim() === "") {
+            alert("Username cannot be empty.");
+            event.preventDefault();
+        }
+    });
 </script>
 
 <?php

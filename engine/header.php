@@ -47,16 +47,16 @@ if (isset($_SESSION['username'])) {
     <title>Titan</title>
 
     <?php if (isset($userTheme)): ?>
-        <link rel="stylesheet" href="../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.53">
-        <link rel="stylesheet" href="../../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.53">
+        <link rel="stylesheet" href="../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.54">
+        <link rel="stylesheet" href="../../css/<?= htmlspecialchars($userTheme) ?>.css?v=1.54">
     <?php else: ?>
-        <link rel="stylesheet" href="../css/blueberry.css?v=1.53">
-        <link rel="stylesheet" href="../../css/blueberry.css?v=1.53">
+        <link rel="stylesheet" href="../css/blueberry.css?v=1.54">
+        <link rel="stylesheet" href="../../css/blueberry.css?v=1.54">
     <?php endif; ?>
 
 
-       <link rel="stylesheet" href="../css/style.css?v=1.63">
-    <link rel="stylesheet" href="../../css/style.css?v=1.63">
+       <link rel="stylesheet" href="../css/style.css?v=1.66">
+    <link rel="stylesheet" href="../../css/style.css?v=1.66">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

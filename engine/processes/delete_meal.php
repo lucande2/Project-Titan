@@ -35,7 +35,15 @@ if (isset($_GET['id'])) {
         mysqli_query($conn, $deleteMealSQL);
 
         // Redirect to a page indicating successful deletion
-        header("Location: ../../admin/manage_meals.php");
+        // Check if the user is an admin
+        if ($_SESSION['role'] != 'admin') {
+            // Redirect to the search food list page with the user id
+            header('Location: ../../content/profile.php?id=' . $_SESSION['user_id']);
+        }
+        else {
+            // Redirect to the manage food list page
+            header('Location: ../../admin/manage_foods.php');
+        }
         exit();
     } else {
         // The logged-in user is not the creator of the meal

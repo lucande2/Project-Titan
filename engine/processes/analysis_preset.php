@@ -9,6 +9,7 @@ include_once '../dbConnect.php';
 include_once '../../engine/dbConnect.php';
 
 function presetValueFetch() {
+    global $conn;
     $gender = $_POST['gender'];
     $focus = $_POST['focus'];
 

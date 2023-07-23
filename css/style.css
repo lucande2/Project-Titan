@@ -63,7 +63,7 @@ p {
 
     border-bottom: 1px solid;
     border-color: black;
-    box-shadow: 0 8px 6px -6px;
+    box-shadow: 0 4px 6px -6px;
 }
 
 .top-bar p, .footer p {
@@ -127,7 +127,7 @@ p {
 
     border-top: 1px solid;
     border-color: black;
-    box-shadow: 0 -8px 6px -6px;
+    box-shadow: 0 -4px 6px -6px;
 }
 
 .footer a {
@@ -199,7 +199,7 @@ p {
 }
 
 .sidebar-menu li a:hover {
-    box-shadow: 2px 2px 10px 0px;
+    box-shadow: 1px 1px 5px 0px;
 }
 
 .centre-menu {

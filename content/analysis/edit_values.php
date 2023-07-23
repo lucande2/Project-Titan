@@ -19,7 +19,7 @@ $userValues = getUserValues2($userId, $conn);
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
 <!--Page Starts-->
-<h2>Analysis Centre</h2>
+<h2>Analysis Center</h2>
 <ul class="centre-menu">
     <!-- Adding the links to the centre menu -->
     <li class="menu-item"><a href="values.php?id=<?php echo $userId; ?>">Your<br>Values</a></li>
@@ -47,7 +47,12 @@ $userValues = getUserValues2($userId, $conn);
                 <tr>
                     <td><?= htmlspecialchars($value['nutrient_name']) ?></td>
                     <td><?= htmlspecialchars($value['ac_amount']) ?> <?= htmlspecialchars($value['measurement_name']) ?></td>
-                    <td><input type="text" name="new_amount[<?= $value['ac_nutrient_id'] ?>]" /></td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" name="new_amount[<?= $value['ac_nutrient_id'] ?>]" style="margin-right: 10px;" />
+                            <span><?= htmlspecialchars($value['measurement_name']) ?></span>
+                        </div>
+                    </td>
                     <td><?= $value['is_tracked'] ? '<i class="fa-solid fa-check" style="color: #00b528;"></i>'
                             : '<i class="fa-solid fa-xmark" style="color: #ff0035;"></i>' ?></td>
                 </tr>

@@ -24,8 +24,8 @@ if (isset($_POST["query"])) {
                     <div class='dropdown'>
                       <button class='dropbtn select'>Select</button>
                       <div class='dropdown-content'>
-                        <a href='https://project.lucande.io/content/foods/view_food.php?id=".$row["id"]."'>View</a>
-                        <a href='https://project.lucande.io/content/foods/manage_food.php?id=".$row["id"]."'>Manage</a>
+                        <a href='https://project.lucande.io/content/foods/view_food.php?id=".$row["id"]."' target='_blank'>View</a>
+                        <a href='https://project.lucande.io/content/foods/manage_food.php?id=".$row["id"]."' target='_blank'>Modify</a>
                       </div>
                     </div>
                   </td>";

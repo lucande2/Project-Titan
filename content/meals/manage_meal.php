@@ -9,6 +9,8 @@ include('../../engine/header.php');
 require_once('../../engine/dbConnect.php');
 require_once('../../engine/processes/fetch_meal_details.php');
 
+global $conn;
+
 $mealId = $_GET['id']; // retrieve meal id from query string
 $mealDetails = getMealDetails($mealId, $conn);
 ?>
@@ -17,7 +19,14 @@ $mealDetails = getMealDetails($mealId, $conn);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <h2>Manage Meal</h2>
-
+<p>Modify an existing meal for your profile here.  The meals you add here are used for analysis purposes.  The meal type
+    in the future will order the meals on your profile.  The notes field allow you to add notes for future reference.</p>
+<br>
+<p>To add food to your meal, search for food items in the search box and add a serving.  You can add more than
+    one serving by clicking on the "select" button more times.  You can also use the '+' or '-' buttons for that
+    food item.</p>
+<br>
+<p>When you are done making changes, submit the meal.</p>
 <form action="../../engine/processes/manage_meal_process.php" method="post" id="meal_form">
     <!-- Hidden input for the meal ID -->
     <input type="hidden" id="meal_id" name="id" value="<?php echo $mealId; ?>" />
@@ -63,11 +72,27 @@ $mealDetails = getMealDetails($mealId, $conn);
             <label for="food_search">Search Food:</label>
             <input type="text" id="food_search" name="food_search" class="form-control" style="width: 85%;">
         </div>
-        <button type="button" id="search_button" class="btn btn-primary" style="margin-left: 10px;">Search</button>
+        <button type="button" id="search_button" class="button-link" style="margin-left: 10px;">Search</button>
+        <button type="button" id="clear_button" class="button-link" style="margin-left: 10px;">Clear</button>
     </div>
     <div id="search_results"></div>
 
-    <input type="submit" value="Submit" class="btn btn-primary" style="margin-top: 10px;">
+
+
+    <input type="submit" value="Submit" class="button-link" style="margin-top: 10px;">
+
+    <?php
+    // Check if the logged-in user is the creator of the meal
+    $user_id = $_SESSION['user-id'];
+
+    $meal_creator_id = $mealDetails['meal']['user_id'];
+
+    if ($user_id == $meal_creator_id) {
+        ?>
+        <a href="../../engine/processes/delete_meal.php?id=<?php echo $mealId; ?>"  class="button-link" onclick="return confirm('Are you sure you want to delete this meal?')">Delete Meal</a>
+        <?php
+    }
+    ?>
 </form>
 
 <script>
@@ -165,7 +190,13 @@ $mealDetails = getMealDetails($mealId, $conn);
 
         $('#food_list_data').val(JSON.stringify(foodList));
     });
+
+    document.getElementById('clear_button').addEventListener('click', function() {
+        document.getElementById('food_search').value = '';
+        document.getElementById('search_results').innerHTML = '';
+    });
 </script>
 
+<script src="/engine/javascript/manage_meal_v1.0.js"></script>
 
 <?php include('../../engine/footer.php'); ?>

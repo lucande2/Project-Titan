@@ -10,7 +10,7 @@ function getMealDetails($id, $conn) {
 
     // Fetch meal data and associated user
     $query = $conn->prepare(
-        "SELECT meals.*, users.username, meals.notes
+        "SELECT meals.*, users.username, meals.notes, users.id as user_id
          FROM meals
          INNER JOIN users ON meals.user_id = users.id
          WHERE meals.id = ?"
@@ -22,6 +22,7 @@ function getMealDetails($id, $conn) {
     $meal = $result->fetch_assoc();
     $mealDetails['meal'] = $meal;
     $mealDetails['notes'] = $meal['notes'];
+    $mealDetails['user_id'] = $meal['user_id'];  // storing user_id in the returned array
 
     // Fetch food items in the meal along with servings
     $query = $conn->prepare("SELECT food.*, meal_foods.servings, food.serving_measurement
@@ -47,6 +48,7 @@ function getMealDetails($id, $conn) {
 
     return $mealDetails;
 }
+
 
 function getProfileMeals($userId, $conn) {
     // Fetch meal data

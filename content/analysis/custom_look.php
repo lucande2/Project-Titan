@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userValues = getUserValues($userId, $conn);
 
     // Sum up the meal totals
-    $totalsSum = sum_meal_totals($mealTotals);
+    //$totalsSum = sum_meal_totals($mealTotals);
 
     // Multiply nutrient values by the number of days in the range
     $multipliedValues = multiplyUserValues($userValues, count($dates));
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dailyMealTotals = fetch_daily_meal_totals($mealsInRange, $conn);
 
     // Link the meal totals to their corresponding nutrient names
-    $linkedValues = linkValues($totalsSum, $conn);
+    //$linkedValues = linkValues($totalsSum, $conn);
 
     // Link the daily meal totals to their corresponding nutrient names
     $linkedDailyMealTotals = linkValues($dailyMealTotals, $conn);
@@ -103,7 +103,7 @@ foreach($analysisResults as $date => $dayAnalysis) {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
-<h2>Analysis Centre</h2>
+<h2>Analysis Center</h2>
 <ul class="centre-menu">
     <!-- Adding the links to the centre menu -->
     <li class="menu-item"><a href="values.php?id=<?php echo $userId; ?>">Your<br>Values</a></li>
@@ -114,7 +114,7 @@ foreach($analysisResults as $date => $dayAnalysis) {
 <div class="data-section">
     <h1>Specify Date Range</h1>
     <p>You can specify a custom date range up to a maximum of <b>30 (thirty) days</b>.</p>
-    <form action="" method="post">
+    <form id="date-form" action="" method="post">
         <label for="startDate" style="color: black">Start Date:</label>
         <input type="date" name="startDate" id="startDate">
         <label for="endDate" style="color: black">End Date:</label>
@@ -123,6 +123,39 @@ foreach($analysisResults as $date => $dayAnalysis) {
         <input type="submit" value="Submit">
     </form>
 </div>
+<script>
+    document.getElementById('endDate').valueAsDate = new Date(); // Pre-populate the end date with today's date
+
+    document.getElementById('date-form').addEventListener('submit', function(event) {
+        var startDate = document.getElementById('startDate').valueAsDate;
+        var endDate = document.getElementById('endDate').valueAsDate;
+
+        // Check that both fields have dates
+        if (!startDate || !endDate) {
+            alert('Please make sure both date fields are filled.');
+            event.preventDefault();
+            return;
+        }
+
+        // Check that end date is after the start date
+        if (endDate < startDate) {
+            alert('End date must be after start date.');
+            event.preventDefault();
+            return;
+        }
+
+        // Check that dates are no more than 31 days apart
+        var diffInMilliseconds = endDate - startDate;
+        var diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+
+        if (diffInDays > 31) {
+            alert('Dates must be no more than 31 days apart.');
+            event.preventDefault();
+            return;
+        }
+    });
+</script>
+
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -245,13 +278,13 @@ foreach($mealsInRange as $date => $meals) {
             if (isset($analysisResults[$date][$nutrient_name])) {
                 switch ($analysisResults[$date][$nutrient_name]) {
                     case "high":
-                        echo "<td><i class='fa-solid fa-arrow-up' style='color: #ffd104;'></i></td>";
+                        echo "<td><i class='fa-solid fa-arrow-up' style='color: red; text-shadow: -1px 0 darkred, 0 1px darkred, 1px 0 darkred, 0 -1px darkred;'></i></td>";
                         break;
                     case "low":
-                        echo "<td><i class='fa-solid fa-arrow-down' style='color: #ffd104;'></i></td>";
+                        echo "<td><i class='fa-solid fa-arrow-down' style='color: #ffd104; text-shadow: -1px 0 darkgoldenrod, 0 1px darkgoldenrod, 1px 0 darkgoldenrod, 0 -1px darkgoldenrod;'></i></td>";
                         break;
                     case "good":
-                        echo "<td><i class='fa-solid fa-check' style='color: #00b528;'></i></td>";
+                        echo "<td><i class='fa-solid fa-check' style='color: #00b528; text-shadow: -1px 0 darkgreen, 0 1px darkgreen, 1px 0 darkgreen, 0 -1px darkgreen;'></i></td>";
                         break;
                 }
             } else {
@@ -302,3 +335,4 @@ include_once '../../engine/footer.php';
         });
     });
 </script>
+

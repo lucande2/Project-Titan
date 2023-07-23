@@ -78,15 +78,34 @@ function multiplyUserValues($userValues, $days) {
     return $userValues;
 }
 
+function updateUserValues($userId, $newValues, $conn) {
+    $query = "UPDATE ac_user_values SET ac_amount = ? WHERE user_id = ? AND ac_nutrient_id = ?";
+
+    foreach ($newValues as $nutrientId => $newAmount) {
+        if (!empty($newAmount)) {
+            if ($stmt = $conn->prepare($query)) {
+                $stmt->bind_param('dii', $newAmount, $userId, $nutrientId);
+                $stmt->execute();
+            } else {
+                error_log("Failed to prepare statement: (" . $conn->errno . ") " . $conn->error);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["new_amount"])) {
         $userId = $_POST['user_id'];
-        include_once '../../engine/dbConnect.php';
+        include_once '../../engine/dbConnect.php'; // add connection here as it's needed for updateUserValues
         if(updateUserValues($userId, $_POST["new_amount"], $conn)){
             header("Location: /content/analysis/values.php?id=".$userId);
             exit;
         }
     }
 }
+
 
 ?>

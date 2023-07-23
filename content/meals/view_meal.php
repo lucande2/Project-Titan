@@ -65,11 +65,11 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
                 </tr>
                 <tr>
                     <td>Dietary Fibres</td>
-                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_dietary_fibres']); ?></td>
+                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_dietary_fibres']) . ' g'; ?></td>
                 </tr>
                 <tr>
                     <td>Cholesterol</td>
-                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_cholesterol']); ?></td>
+                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_cholesterol']) . ' g'; ?></td>
                 </tr>
             </table>
         </div>
@@ -81,15 +81,15 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
                 </tr>
                 <tr>
                     <td>Proteins</td>
-                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_proteins']); ?></td>
+                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_proteins']) . ' g'; ?></td>
                 </tr>
                 <tr>
                     <td>Sugars</td>
-                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_sugars']); ?></td>
+                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_sugars']) . ' g'; ?></td>
                 </tr>
                 <tr>
                     <td>Sodium</td>
-                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_sodium']); ?></td>
+                    <td><?php echo htmlspecialchars($mealDetails['totals']['total_sodium']) . ' mg'; ?></td>
                 </tr>
             </table>
         </div>
@@ -105,12 +105,13 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
             <th>Trans Fats</th>
         </tr>
         <tr>
-            <td><?php echo htmlspecialchars($mealDetails['totals']['total_fat']); ?></td>
-            <td><?php echo htmlspecialchars($mealDetails['totals']['total_saturated_fats']); ?></td>
-            <td><?php echo htmlspecialchars($mealDetails['totals']['total_trans_fats']); ?></td>
+            <td><?php echo htmlspecialchars($mealDetails['totals']['total_fat']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($mealDetails['totals']['total_saturated_fats']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($mealDetails['totals']['total_trans_fats']) . ' g'; ?></td>
         </tr>
     </table>
 </div>
+
 
 <div class="data-section">
     <h2>Micronutrients</h2>
@@ -125,6 +126,7 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
             }
 
             $micronutrients = [];
+            $chartMicronutrients = [];
             $colorIndex = 0;
 
             foreach ($mealDetails['totals'] as $key => $value) {
@@ -135,10 +137,15 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
 
                     // Check if value is greater than 1000
                     if ($value > 1000) {
-                        $value = $value / 1000; // Convert to milligrams
-                        $value = round($value, 2); // Optional: round the value to 2 decimal places
+                        $valueForChart = $value / 100; // Convert for chart
+                        $value = $value / 1000; // Convert to milligrams for table
+                        $value = number_format($value, 2, '.', ''); // Format to 2 decimal places, remove insignificant zeros
+                        $value = strpos($value, '.00') !== false ? intval($value) : $value; // If decimal part is .00, convert to int
                         $value .= " mg"; // Append "mg"
                     } else {
+                        $valueForChart = $value;
+                        $value = number_format($value, 2, '.', ''); // Format to 2 decimal places, remove insignificant zeros
+                        $value = strpos($value, '.00') !== false ? intval($value) : $value; // If decimal part is .00, convert to int
                         $value .= " mcg"; // Append "mcg"
                     }
 
@@ -147,6 +154,13 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
                         'value' => $value,
                         'color' => generateNutrientColor($colorIndex), // calling the PHP function
                     ];
+
+                    $chartMicronutrients[] = [
+                        'label' => $nutrientName,
+                        'value' => $valueForChart,
+                        'color' => generateNutrientColor($colorIndex), // calling the PHP function
+                    ];
+
                     $colorIndex++;
                 }
             }
@@ -176,7 +190,7 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
             ?>
         </div>
         <div>
-            <?php if (!empty($micronutrients)) : ?>
+            <?php if (!empty($chartMicronutrients)) : ?>
                 <div class="chart-container" style="height:250px; width:250px;">
                     <canvas id="micronutrient-chart"></canvas>
                 </div>
@@ -185,10 +199,9 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
                     let ctx = document.getElementById('micronutrient-chart').getContext('2d');
 
                     // Get the data from PHP
-                    let labels = <?php echo json_encode(array_column($micronutrients, 'label')); ?>;
-                    let data = <?php echo json_encode(array_map('floatval', array_column($micronutrients, 'value'))); ?>;
-                    let colors = <?php echo json_encode(array_column($micronutrients, 'color')); ?>;
-
+                    let labels = <?php echo json_encode(array_column($chartMicronutrients, 'label')); ?>;
+                    let data = <?php echo json_encode(array_map('floatval', array_column($chartMicronutrients, 'value'))); ?>;
+                    let colors = <?php echo json_encode(array_column($chartMicronutrients, 'color')); ?>;
 
                     let chart = new Chart(ctx, {
                         type: 'doughnut',
@@ -228,6 +241,7 @@ $ingredients = explode(', ', $mealDetails['totals']['ingredient_list']);
         </div>
     </div>
 </div>
+
 
 
 <a href="/content/meals/manage_meal.php?id=<?php echo htmlspecialchars($id); ?>" class="button-link">Manage Meal</a>

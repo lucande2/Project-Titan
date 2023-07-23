@@ -53,6 +53,12 @@ if(isset($_GET['id'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <h1>Edit Food</h1>
+    <p>This page allows you to modify an existing food item in the database.   Itt is imperative that you use
+        real and reliable information.  If you make a mistake, you can edit this food item later.</p><br><br>
+<h2>Food Information</h2>
+<p>For the name, specify what it is "Ketchup", and for the brand, who makes the food "Heinz".  There is no
+    decimals or fractions permitted at this time, so round to the nearest whole number.  For the food group,
+    if unsure, use "unaligned".</p>
     <form action="/engine/processes/manage_food_process.php" method="post">
         <input type="hidden" name="id" value="<?= $id; ?>" />
         <div class="row">
@@ -78,7 +84,7 @@ if(isset($_GET['id'])) {
                 </select>
             </div>
         </div>
-
+        <br><br><br>
 
         <div class="row">
             <div class="col">
@@ -93,17 +99,25 @@ if(isset($_GET['id'])) {
                     <option value="Pieces" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Pieces') ? 'selected' : ''; ?>>Pieces</option>
                     <option value="Container" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Container') ? 'selected' : ''; ?>>Container</option>
                     <option value="Package" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Package') ? 'selected' : ''; ?>>Package</option>
+                    <option value="Tablespoons" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Tablespoons') ? 'selected' : ''; ?>>Tablespoons</option>
+                    <option value="Teaspoons" <?= (isset($food['serving_measurement']) && $food['serving_measurement'] == 'Teaspoons') ? 'selected' : ''; ?>>Teaspoons</option>
+
                 </select>
             </div>
             <div class="col">
                 <label for="calories" style="color:#fff;">Calories</label>
                 <input type="number" id="calories" name="calories" class="form-control" value="<?= isset($food['calories']) ? $food['calories'] : ''; ?>">
             </div>
-        </div>  <br>
+        </div>
+        <br><br><br><br>
+
 
         <div class="row">
             <div class="col">
-                <label for="ingredients" style="color:#fff;">Ingredients</label>
+                <h2>Ingredients</h2>
+                <p>These ingredients are typically labeled on the food item itself.  You can add a new text field
+                    by clicking "add ingredient" or by hitting the "TAB" key while in the last text field.</p>
+                <label for="ingredients" style="color:#fff;"></label>
                 <div id="ingredients">
                     <?php foreach($ingredients as $ingredient) { ?>
                         <div class="row ingredient-group">
@@ -119,56 +133,113 @@ if(isset($_GET['id'])) {
                 <button type="button" id="add-ingredient" class="btn btn-primary">Add Ingredient</button>
 
             </div>
-        </div><br>
+        </div>
+        <br><br><br><br>
+        <h2>Additional Information</h2>
+        <p>These values are macronutrients found on the top part of the food label.  If the value is not present
+            on the food label, type a "0" into the spot.  If there is a decimal, please round it up.</p>
 
         <div class="row">
             <div class="col">
                 <label for="total_fats" style="color:#fff;">Total Fats</label>
-                <input type="number" id="total_fats" name="total_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['total'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="total_fats" name="total_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['total'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <label for="saturated_fats" style="color:#fff;">Saturated Fats</label>
-                <input type="number" id="saturated_fats" name="saturated_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['saturated_fats'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="saturated_fats" name="saturated_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['saturated_fats'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <label for="trans_fats" style="color:#fff;">Trans Fats</label>
-                <input type="number" id="trans_fats" name="trans_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['trans_fats'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="trans_fats" name="trans_fats" class="form-control" value="<?= !empty($fats) ? $fats[0]['trans_fats'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
         </div>
+
+
+        <br><br><br>
 
         <div class="row">
             <div class="col">
                 <label for="cholesterol" style="color:#fff;">Cholesterol</label>
-                <input type="number" id="cholesterol" name="cholesterol" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['cholesterol'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="cholesterol" name="cholesterol" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['cholesterol'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <label for="dietary_fibres" style="color:#fff;">Dietary Fibres</label>
-                <input type="number" id="dietary_fibres" name="dietary_fibres" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['dietary_fibres'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="dietary_fibres" name="dietary_fibres" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['dietary_fibres'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <label for="total_sugars" style="color:#fff;">Total Sugars</label>
-                <input type="number" id="total_sugars" name="total_sugars" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['total_sugars'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="total_sugars" name="total_sugars" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['total_sugars'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <br><br><br>
 
         <div class="row">
             <div class="col">
                 <label for="sodium" style="color:#fff;">Sodium</label>
-                <input type="number" id="sodium" name="sodium" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['sodium'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="sodium" name="sodium" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['sodium'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">mg</span>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <label for="proteins" style="color:#fff;">Proteins</label>
-                <input type="number" id="proteins" name="proteins" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['proteins'] : ''; ?>">
+                <div class="input-group">
+                    <input type="number" id="proteins" name="proteins" class="form-control" value="<?= !empty($additional_info) ? $additional_info[0]['proteins'] : ''; ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">g</span>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <p> </p>
             </div>
-        </div><br>
+        </div>
+
+
+        <br><br><br>
+
+        <h2>Nutrients</h2>
+        <p>These micro-nutrients are typically specified on the bottom part of the food label.  You can add a
+            new nutrient field by clicking "add nutrient" or by hitting the "TAB" key while in the last text
+            field.</p>
 
 
         <div class="row">
             <div class="col">
-                <label for="nutrients" style="color:#fff;">Nutrients</label>
+                <label for="nutrients" style="color:#fff;"></label>
                 <div id="nutrients">
                     <?php foreach($nutrients as $nutrient) { ?>
                         <div class="row nutrient-group">
@@ -185,7 +256,7 @@ if(isset($_GET['id'])) {
                                     <option value="Magnesium" <?php if($nutrient['name'] == 'Magnesium') echo 'selected'; ?>>Magnesium</option>
                                     <option value="Manganese" <?php if($nutrient['name'] == 'Manganese') echo 'selected'; ?>>Manganese</option>
                                     <option value="Molybdenum" <?php if($nutrient['name'] == 'Molybdenum') echo 'selected'; ?>>Molybdenum</option>
-                                    <option value="Phosphorous" <?php if($nutrient['name'] == 'Phosphorous') echo 'selected'; ?>>Phosphorous</option>
+                                    <option value="Phosphorus" <?php if($nutrient['name'] == 'Phosphorus') echo 'selected'; ?>>Phosphorus</option>
                                     <option value="Potassium" <?php if($nutrient['name'] == 'Potassium') echo 'selected'; ?>>Potassium</option>
                                     <option value="Selenium" <?php if($nutrient['name'] == 'Selenium') echo 'selected'; ?>>Selenium</option>
                                     <option value="Sulfur" <?php if($nutrient['name'] == 'Sulfur') echo 'selected'; ?>>Sulfur</option>
@@ -227,11 +298,16 @@ if(isset($_GET['id'])) {
                 <button type="button" id="add-nutrient" class="btn btn-primary">Add Nutrient</button>
 
             </div>
-        </div><br>
+        </div>
+        <br><br><br>
+        <h2>Tags</h2>
+        <p>Tags are un-implemeneted right now, but will allow a user to search for foods by using the tags here.  They
+            are not required. You can add a new tag field by clicking "add tag" or by hitting the "TAB" key while in
+            the last text field.</p>
 
         <div class="row">
             <div class="col">
-                <label for="tags" style="color:#fff;">Tags</label>
+                <label for="tags" style="color:#fff;"></label>
                 <div id="tags">
                     <?php foreach($tags as $tag) { ?>
                         <div class="row tag-group">
@@ -248,10 +324,10 @@ if(isset($_GET['id'])) {
 
             </div>
         </div><br>
-
+        <br><br><p>When finished, submit the food into the database.  You can make changes later.</p>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <script src="/engine/javascript/manage_food_v1.js"></script>
+    <script src="/engine/javascript/manage_food_v1.3.js"></script>
 
 <?php include '../../engine/footer.php'; ?>

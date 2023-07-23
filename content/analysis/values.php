@@ -20,7 +20,7 @@ $userValues = getUserValues2($userId, $conn);
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
 <!-- Page Starts-->
-<h2>Analysis Centre</h2>
+<h2>Analysis Center</h2>
 <ul class="centre-menu">
     <!-- Adding the links to the center menu -->
     <li class="menu-item"><a href="values.php?id=<?php echo $userId; ?>">Your<br>Values</a></li>
@@ -30,7 +30,7 @@ $userValues = getUserValues2($userId, $conn);
 <br>
 <h1>View Your Values</h1>
 <p>These are your current values.  You can make
-    <a href="edit_values.php?id=<?php echo $userId; ?>">changes to your values</a>.</p>
+    <a href="edit_values.php?id=<?php echo $userId; ?>" class="button-link">changes to your values</a>.</p>
 <h2>Values</h2>
 <div class="table-container">
     <table id="preset-values-table" class="table-custom">

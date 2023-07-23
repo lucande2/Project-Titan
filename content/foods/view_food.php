@@ -81,16 +81,16 @@ $conn->close();
             <th>Trans Fats</th>
         </tr>
         <tr>
-            <td><?php echo htmlspecialchars($fats['total']); ?></td>
-            <td><?php echo htmlspecialchars($fats['saturated_fats']); ?></td>
-            <td><?php echo htmlspecialchars($fats['trans_fats']); ?></td>
+            <td><?php echo htmlspecialchars($fats['total']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($fats['saturated_fats']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($fats['trans_fats']) . ' g'; ?></td>
         </tr>
     </table>
 </div>
 
 <div class="data-section">
     <h2>Nutrients</h2>
-    <p><?php echo htmlspecialchars(implode(", ", array_map(function($nutrient) { return $nutrient['name'] . ': ' . $nutrient['amount'] . $nutrient['measurement']; }, $nutrients))); ?></p>
+    <p><?php echo htmlspecialchars(implode(", ", array_map(function($nutrient) { return $nutrient['name'] . ': ' . $nutrient['amount'] . ' ' . $nutrient['measurement']; }, $nutrients))); ?></p>
 </div>
 
 <div class="data-section">
@@ -104,11 +104,11 @@ $conn->close();
             <th>Proteins</th>
         </tr>
         <tr>
-            <td><?php echo htmlspecialchars($additional_info['cholesterol']); ?></td>
-            <td><?php echo htmlspecialchars($additional_info['dietary_fibres']); ?></td>
-            <td><?php echo htmlspecialchars($additional_info['total_sugars']); ?></td>
-            <td><?php echo htmlspecialchars($additional_info['sodium']); ?></td>
-            <td><?php echo htmlspecialchars($additional_info['proteins']); ?></td>
+            <td><?php echo htmlspecialchars($additional_info['cholesterol']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($additional_info['dietary_fibres']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($additional_info['total_sugars']) . ' g'; ?></td>
+            <td><?php echo htmlspecialchars($additional_info['sodium']) . ' mg'; ?></td>
+            <td><?php echo htmlspecialchars($additional_info['proteins']) . ' g'; ?></td>
         </tr>
     </table>
 </div>

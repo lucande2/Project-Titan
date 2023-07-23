@@ -71,9 +71,9 @@ $total_pages = ceil($total_foods / $items_per_page);
 </table>
 <br>
 <p>Pages</p>
-<div class="pagination">
+<div class="pagination" style="flex-wrap:wrap;">
     <?php for($i = 1; $i <= $total_pages; $i++): ?>
-        <a class="button-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+        <a style="margin-bottom:10px;" class="button-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
     <?php endfor; ?>
 </div>
 

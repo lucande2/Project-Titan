@@ -31,7 +31,13 @@ foreach ($queries as $query) {
 // Close the database connection
 mysqli_close($conn);
 
-// Redirect to the food list page
-header('Location: ../../admin/manage_foods.php');
+// Check if the user is an admin
+if ($_SESSION['role'] != 'admin') {
+    // Redirect to the search food list page
+    header('Location: ../../content/foods/search_food.php');
+} else {
+    // Redirect to the manage food list page
+    header('Location: ../../admin/manage_foods.php');
+}
 exit();
 ?>

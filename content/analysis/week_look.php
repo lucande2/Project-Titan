@@ -14,6 +14,8 @@ include_once '../../engine/processes/analysis_meals.php';
 include_once '../../engine/processes/analysis_compare.php';
 include_once '../../engine/processes/analysis_chart.php';
 
+global $conn;
+
 $userId = $_GET['id'];
 
 if (isset($_GET['prevSunday'])) {
@@ -48,7 +50,7 @@ $mealsInRange = fetch_meals_inRange($userId, $dates, $conn);
 
 // Fetch meal total nutrient values for each meal in range
 $mealTotals = fetch_meal_totals($mealsInRange, $conn);
-//print_r($mealTotals);
+
 
 // Fetch user's nutrient values for display later
 $userValues = getUserValues($userId, $conn);
@@ -120,14 +122,14 @@ foreach($analysisResults as $date => $dayAnalysis) {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://kit.fontawesome.com/0bd93e423d.js" crossorigin="anonymous"></script>
 
-<h2>Analysis Centre</h2>
+<h2>Analysis Center</h2>
 <ul class="centre-menu">
     <!-- Adding the links to the center menu -->
     <li class="menu-item"><a href="values.php?id=<?php echo $userId; ?>">Your<br>Values</a></li>
     <li class="menu-item"><a href="week_look.php?id=<?php echo $userId; ?>">Weekly<br>Progress</a></li>
     <li class="menu-item"><a href="custom_look.php?id=<?php echo $userId; ?>">Custom Range<br>Analysis</a></li>
 </ul>
-<br><
+<br>
 <div class="data-section">
     <h1>Your Week</h1>
     <p>This page shows your nutritional intake versus your daily recommendations.  You can choose to view a custom range or
@@ -226,7 +228,7 @@ foreach($mealsInRange as $date => $meals) {
     if (array_key_exists($date, $dailyMealTotals)) {
         echo "<h3>Nutrients Analysis</h3>";
         echo "<table class='table-custom'>";
-        echo "<tr><th>Nutrient</th><th>Daily Recommended Total</th><th>Total Daily Intake</th><th>Analysis</th></tr>"; // add Analysis column
+        echo "<tr><th>Nutrient</th><th>Daily Recommended</th><th>Daily Intake</th><th>Analysis</th></tr>"; // add Analysis column
 
     // map the nutrients correctly
     $linkedDailyMealTotalsWithUnits = addUnits(linkValues($dailyMealTotals[$date], $conn));
@@ -247,18 +249,19 @@ foreach($mealsInRange as $date => $meals) {
             if (isset($analysisResults[$date][$nutrient_name])) {
                 switch ($analysisResults[$date][$nutrient_name]) {
                     case "high":
-                        echo "<td><i class='fa-solid fa-arrow-up' style='color: #ffd104;'></i></td>";
+                        echo "<td><i class='fa-solid fa-arrow-up' style='color: red; text-shadow: -1px 0 darkred, 0 1px darkred, 1px 0 darkred, 0 -1px darkred;'></i></td>";
                         break;
                     case "low":
-                        echo "<td><i class='fa-solid fa-arrow-down' style='color: #ffd104;'></i></td>";
+                        echo "<td><i class='fa-solid fa-arrow-down' style='color: #ffd104; text-shadow: -1px 0 darkgoldenrod, 0 1px darkgoldenrod, 1px 0 darkgoldenrod, 0 -1px darkgoldenrod;'></i></td>";
                         break;
                     case "good":
-                        echo "<td><i class='fa-solid fa-check' style='color: #00b528;'></i></td>";
+                        echo "<td><i class='fa-solid fa-check' style='color: #00b528; text-shadow: -1px 0 darkgreen, 0 1px darkgreen, 1px 0 darkgreen, 0 -1px darkgreen;'></i></td>";
                         break;
                 }
             } else {
                 echo "<td></td>";
             }
+
 
             echo "</tr>";
 

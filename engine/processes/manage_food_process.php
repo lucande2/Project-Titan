@@ -7,10 +7,6 @@
 
 require_once '../../engine/dbConnect.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $food_id = mysqli_real_escape_string($conn, htmlspecialchars($_POST['id']));
 
@@ -18,10 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $food_name = mysqli_real_escape_string($conn, htmlspecialchars($_POST['name']));
     $brand = mysqli_real_escape_string($conn, htmlspecialchars($_POST['brand']));
     $food_group = mysqli_real_escape_string($conn, htmlspecialchars($_POST['food_group']));
-    $serving_size = mysqli_real_escape_string($conn, htmlspecialchars($_POST['serving_size']));
+    $serving_size = abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['serving_size'])));
     $serving_measurement = mysqli_real_escape_string($conn, htmlspecialchars($_POST['serving_measurement']));
-    $calories = !empty($_POST['calories']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['calories'])) : "0";
-
+    $calories = !empty($_POST['calories']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['calories']))) : "0";
     // Prepare SQL statement to update food item
     $stmt = $conn->prepare("UPDATE food SET name = ?, brand = ?, food_group = ?, serving_size = ?, serving_measurement = ?, calories = ? WHERE id = ?");
     $stmt->bind_param("sssissi", $food_name, $brand, $food_group, $serving_size, $serving_measurement, $calories, $food_id);
@@ -82,20 +77,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Update the fats information
-    $total_fats = !empty($_POST['total_fats']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_fats'])) : "0";
-    $saturated_fats = !empty($_POST['saturated_fats']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['saturated_fats'])) : "0";
-    $trans_fats = !empty($_POST['trans_fats']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['trans_fats'])) : "0";
+    $total_fats = !empty($_POST['total_fats']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_fats']))) : "0";
+    $saturated_fats = !empty($_POST['saturated_fats']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['saturated_fats']))) : "0";
+    $trans_fats = !empty($_POST['trans_fats']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['trans_fats']))) : "0";
 
     $stmt = $conn->prepare("UPDATE fats SET total = ?, saturated_fats = ?, trans_fats = ? WHERE food_id = ?");
     $stmt->bind_param("iiii", $total_fats, $saturated_fats, $trans_fats, $food_id);
     $stmt->execute();
 
     // Update the additional info
-    $cholesterol = !empty($_POST['cholesterol']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['cholesterol'])) : "0";
-    $dietary_fibres = !empty($_POST['dietary_fibres']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['dietary_fibres'])) : "0";
-    $total_sugars = !empty($_POST['total_sugars']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_sugars'])) : "0";
-    $proteins = !empty($_POST['proteins']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['proteins'])) : "0";
-    $sodium = !empty($_POST['sodium']) ? mysqli_real_escape_string($conn, htmlspecialchars($_POST['sodium'])) : "0";
+    $cholesterol = !empty($_POST['cholesterol']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['cholesterol']))) : "0";
+    $dietary_fibres = !empty($_POST['dietary_fibres']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['dietary_fibres']))) : "0";
+    $total_sugars = !empty($_POST['total_sugars']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['total_sugars']))) : "0";
+    $proteins = !empty($_POST['proteins']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['proteins']))) : "0";
+    $sodium = !empty($_POST['sodium']) ? abs(mysqli_real_escape_string($conn, htmlspecialchars($_POST['sodium']))) : "0";
+
 
     $stmt = $conn->prepare("UPDATE additional_info SET cholesterol = ?, dietary_fibres = ?, total_sugars = ?, proteins = ?, sodium = ? WHERE food_id = ?");
     $stmt->bind_param("iiiiii", $cholesterol, $dietary_fibres, $total_sugars, $proteins, $sodium, $food_id);
@@ -110,13 +106,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $existing_nutrients = $result->fetch_all(MYSQLI_ASSOC);
 
     // Process the nutrients that were passed in the POST data
-    $nutrient_names = $_POST['nutrient_names'];
-    $nutrient_amounts = $_POST['nutrient_amounts'];
-    $nutrient_units = $_POST['nutrient_units'];
+    $nutrient_names = isset($_POST['nutrient_names']) ? $_POST['nutrient_names'] : array();
+    $nutrient_amounts = isset($_POST['nutrient_amounts']) ? $_POST['nutrient_amounts'] : array();
+    $nutrient_units = isset($_POST['nutrient_units']) ? $_POST['nutrient_units'] : array();
+
 
     for ($i = 0; $i < count($nutrient_names); $i++) {
         $name = mysqli_real_escape_string($conn, htmlspecialchars($nutrient_names[$i]));
-        $amount = mysqli_real_escape_string($conn, htmlspecialchars($nutrient_amounts[$i]));
+        $amount = abs(mysqli_real_escape_string($conn, htmlspecialchars($nutrient_amounts[$i])));
         $unit = mysqli_real_escape_string($conn, htmlspecialchars($nutrient_units[$i]));
 
         $found = false;

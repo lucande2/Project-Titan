@@ -2,13 +2,47 @@
 /*
     engine/proccesses/analysis_compare.php    VERSION 1.3
     The brains of the analysis centre.  Takes the values, classifies them in a rule group.
-    TODO:  Finish fats
     Reviewed 7/12/2023
 */
 
-include_once '../dbConnect.php';
-//include_once '../../engine/dbConnect.php';
+include_once '/usr/share/nginx/html_project/engine/dbConnect.php';
 include_once 'analysis_meals.php';
+
+// Print the current working directory
+//echo 'Current working directory: ' . getcwd() . "<br>";
+
+// Print the current include path
+//echo 'Current include path: ' . get_include_path() . "<br>";
+
+/*
+ *  Normalise Nutrient Values
+ */
+function normalizeUserDefinedValue($nutrient, $value) {
+    $nutrientsToNormalize = [
+        'Copper',
+        'Fluoride',
+        'Iron',
+        'Magnesium',
+        'Manganese',
+        'Phosphorus',
+        'Potassium',
+        'Sulfur',
+        'Vitamin B1',
+        'Vitamin B2',
+        'Vitamin B3',
+        'Vitamin B5',
+        'Vitamin B6',
+        'Vitamin C',
+        'Vitamin E',
+        'Zinc'
+    ];
+
+    if (in_array($nutrient, $nutrientsToNormalize)) {
+        return $value * 1000;
+    }
+
+    return $value;
+}
 
 /*
  * ANALYSIS RULES GROUP 1
@@ -18,6 +52,8 @@ include_once 'analysis_meals.php';
  * being within +/- 10% of the user-defined values.
  */
 function analysis_rules_group1($nutrient, $userDefinedValue, $actualValue) {
+    $userDefinedValue = normalizeUserDefinedValue($nutrient, $userDefinedValue);
+
     $lowerLimit = 0.9 * $userDefinedValue;
     $upperLimit = 1.1 * $userDefinedValue;
 
@@ -30,11 +66,14 @@ function analysis_rules_group1($nutrient, $userDefinedValue, $actualValue) {
     }
 }
 
+
 /*
  * ANALYSIS RULES GROUP 2
- * Sodium, Sugars, Calories: These need to be evaluated for being over +10% of the user-defined values.
+ * Sodium, Sugars, Calories, Fats: These need to be evaluated for being over +10% of the user-defined values.
  */
 function analysis_rules_group2($nutrient, $userDefinedValue, $actualValue) {
+    $userDefinedValue = normalizeUserDefinedValue($nutrient, $userDefinedValue);
+
     $upperLimit = 1.1 * $userDefinedValue;
 
     if ($actualValue > $upperLimit) {
@@ -44,7 +83,14 @@ function analysis_rules_group2($nutrient, $userDefinedValue, $actualValue) {
     }
 }
 
+
+/*
+ * ANALYSIS RULES GROUP 3
+ * For the remainder
+ */
 function analysis_rules_group3($nutrient, $userDefinedValue, $actualValue) {
+    $userDefinedValue = normalizeUserDefinedValue($nutrient, $userDefinedValue);
+
     $lowerLimit = 0.9 * $userDefinedValue;
 
     if ($actualValue < $lowerLimit) {
@@ -54,8 +100,14 @@ function analysis_rules_group3($nutrient, $userDefinedValue, $actualValue) {
     }
 }
 
+
+/*
+ * ANALYSIS COMPARE
+ *
+ */
 function analysis_compare($userValues, $dailyMealTotals) {
     $analysisResult = array();
+    global $conn;
 
     // Use linkValues to map the nutrients
     $linkedDailyMealTotals = linkValues($dailyMealTotals, $conn);

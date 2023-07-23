@@ -52,7 +52,7 @@ $sql_reset_totals = "UPDATE meal_totals SET
     total_calories = 0.00, ingredient_list = NULL, total_cholesterol = 0.00, total_dietary_fibres = 0.00, total_sugars = 0.00,
     total_proteins = 0.00, total_sodium = 0.00, total_fat = 0.00, total_saturated_fats = 0.00, total_trans_fats = 0.00,
     total_calcium = 0.00, total_chloride = 0.00, total_chromium = 0.00, total_copper = 0.00, total_fluoride = 0.00, total_iodine = 0.00,
-    total_iron = 0.00, total_magnesium = 0.00, total_manganese = 0.00, total_molybdenum = 0.00, total_phosphorous = 0.00,
+    total_iron = 0.00, total_magnesium = 0.00, total_manganese = 0.00, total_molybdenum = 0.00, total_phosphorus = 0.00,
     total_potassium = 0.00, total_selenium = 0.00, total_sulfur = 0.00, total_vitamin_A = 0.00, total_vitamin_B1 = 0.00,
     total_vitamin_B2 = 0.00, total_vitamin_B3 = 0.00, total_vitamin_B5 = 0.00, total_vitamin_B6 = 0.00, total_vitamin_B7 = 0.00,
     total_vitamin_B9 = 0.00, total_vitamin_B12 = 0.00, total_vitamin_C = 0.00, total_vitamin_D = 0.00, total_vitamin_E = 0.00,

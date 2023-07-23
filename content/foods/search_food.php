@@ -50,9 +50,23 @@ actions menu.</p>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $search = $_POST['search_bar'];
-    $stmt = $conn->prepare("SELECT * FROM food WHERE name LIKE ? OR brand LIKE ?");
+
+    // Set up for Pagination
+    $itemsPerPage = 10;
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+    $offset = ($page - 1) * $itemsPerPage;
+
+    // SQL Query
+    $stmt = $conn->prepare("SELECT * FROM food WHERE name LIKE ? OR brand LIKE ? LIMIT ? OFFSET ?");
     $searchParam = '%' . $search . '%';
-    $stmt->bind_param('ss', $searchParam, $searchParam);
+    $stmt->bind_param('ssii', $searchParam, $searchParam, $itemsPerPage, $offset);
+
+    $result = $conn->query("SELECT COUNT(*) AS count FROM food WHERE name LIKE '$searchParam' OR brand LIKE '$searchParam'");
+    $row = $result->fetch_assoc();
+    $totalItems = $row['count'];
+    $totalPages = ceil($totalItems / $itemsPerPage);
+
+    // Execute the search
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
@@ -73,6 +87,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "</tr>";
         }
         echo "</table>";
+
+        // Pagination
+        echo 'Pages: ';
+        for ($i = 1; $i <= $totalPages; $i++) {
+            if ($i == $page) {
+                echo $i;
+            } else {
+                echo "<a class='button-link' href='?page=$i'>$i</a>";
+            }
+            if ($i != $totalPages) echo ', ';
+        }
+
     } else {
         echo "<h2>No food entries found...</h2>";
     }

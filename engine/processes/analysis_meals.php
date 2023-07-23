@@ -140,7 +140,7 @@ function linkValues($totals, $conn) {
         'total_magnesium' => 'Magnesium',
         'total_manganese' => 'Manganese',
         'total_molybdenum' => 'Molybdenum',
-        'total_phosphorous' => 'Phosphorus',
+        'total_phosphorus' => 'Phosphorus',
         'total_potassium' => 'Potassium',
         'total_selenium' => 'Selenium',
         'total_sulfur' => 'Sulfur',
@@ -160,53 +160,13 @@ function linkValues($totals, $conn) {
         'total_zinc' => 'Zinc',
     ];
 
-    $conversion = [
-        'Calories' => 1,
-        'Cholesterol' => 1,
-        'Fibres' => 1,
-        'Sugars' => 1,
-        'Proteins' => 1,
-        'Sodium' => 1,
-        'Fat' => 1,
-        'Trans Fat' => 1,
-        'Saturated Fat' => 1,
-        'Calcium' => 1000,  // From mcg to mg
-        'Chloride' => 1000, // From mcg to mg
-        'Chromium' => 1000, // From mcg to mg
-        'Iodine' => 1000,   // From mcg to mg
-        'Molybdenum' => 1000, // From mcg to mg
-        'Selenium' => 1000, // From mcg to mg
-        'Vitamin A' => 1000, // From mcg to mg
-        'Vitamin B7' => 1000, // From mcg to mg
-        'Vitamin B9' => 1000, // From mcg to mg
-        'Vitamin B12' => 1000, // From mcg to mg
-        'Vitamin D' => 1000, // From mcg to mg
-        'Vitamin K' => 1000, // From mcg to mg
-        'Copper' => 1,
-        'Fluoride' => 1,
-        'Iron' => 1,
-        'Magnesium' => 1,
-        'Manganese' => 1,
-        'Phosphorus' => 1,
-        'Potassium' => 1,
-        'Sulfur' => 1,
-        'Vitamin B1' => 1,
-        'Vitamin B2' => 1,
-        'Vitamin B3' => 1,
-        'Vitamin B5' => 1,
-        'Vitamin B6' => 1,
-        'Vitamin C' => 1,
-        'Vitamin E' => 1,
-        'Zinc' => 1,
-    ];
-
     if (is_array(reset($totals))) {
         // If it's a multidimensional array (e.g., array of daily totals)
         foreach($totals as $date => $dailyTotals) {
             foreach($dailyTotals as $column => $value) {
                 if(array_key_exists($column, $mapping)) {
                     $nutrient_name = $mapping[$column];
-                    $totals[$date][$nutrient_name] = $value / $conversion[$nutrient_name];
+                    $totals[$date][$nutrient_name] = $value;
                     unset($totals[$date][$column]);
                 }
             }
@@ -216,26 +176,27 @@ function linkValues($totals, $conn) {
         foreach($totals as $column => $value) {
             if(array_key_exists($column, $mapping)) {
                 $nutrient_name = $mapping[$column];
-                $totals[$nutrient_name] = $value / $conversion[$nutrient_name];
+                $totals[$nutrient_name] = $value;
                 unset($totals[$column]);
             }
         }
     }
 
     return $totals;
-
 }
+
 
 function addUnits($values) {
     $units = array(
-        'total_saturated_fats' => ' g',
-        'total_trans_fats' => ' g',
+        'Saturated Fat' => ' g',
+        'Trans Fat' => ' g',
         'Calories' => ' cal',
-        'Cholesterol' => ' mg',
+        'Cholesterol' => ' %',
         'Fibres' => ' g',
         'Sugars' => ' g',
         'Sodium' => ' mg',
-        'Fats' => ' g',
+        'Fat' => ' g',
+        'Proteins' => ' g'
     );
 
     foreach ($values as $key => $value) {
